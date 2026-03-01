@@ -34,26 +34,11 @@
       <div class="container">
         <div class="section-head">
           <h1>Photo Gallery</h1>
-          <p class="muted">Add travel photos and captions. Stored locally in your browser (demo).</p>
+
         </div>
 
-        <div class="card">
-          <div class="card-body">
-            <form id="addPhotoForm" class="form">
-              <div class="grid-2">
-                <label class="field">
-                  <span>Photo</span>
-                  <input type="file" accept="image/*" />
-                </label>
-
-                <label class="field">
-                  <span>Caption</span>
-                  <input name="caption" type="text" placeholder="e.g., Family beach day" />
-                </label>
-              </div>
 
               <div class="form-actions">
-                <button class="btn btn-primary" type="submit">Add to gallery</button>
                 <a class="btn btn-ghost" href="destinations.html">Explore destinations</a>
               </div>
               <p class="form-note" id="galleryNote"></p>
@@ -63,12 +48,6 @@
 
         <div class="g-grid" id="galleryGrid" aria-label="Gallery grid"></div>
 
-        <div class="note-box">
-          <strong>Want this to be real?</strong>
-          <p class="muted" style="margin:.4rem 0 0">
-            Next step is storing photos in Supabase Storage or S3 and saving metadata in a database.
-          </p>
-        </div>
       </div>
     </section>
   </main>
@@ -76,7 +55,6 @@
   <footer class="site-footer">
     <div class="container footer-inner">
       <p>© <span id="year"></span> New World Venture, LLC</p>
-      <span class="auth-chip">Signed in as: <strong data-auth-chip>Guest</strong></span>
     </div>
   </footer>
 
