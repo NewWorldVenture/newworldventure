@@ -1,0 +1,86 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Photo Gallery — New World Venture</title>
+  <meta name="description" content="Photo gallery (demo)." />
+  <link rel="stylesheet" href="assets/css/styles.css" />
+</head>
+<body><header class="site-header">
+    <div class="container header-inner">
+      <a class="brand" href="index.html" aria-label="Home">
+        <span class="brand-mark">✈️</span>
+        <span class="brand-text">New World Venture</span>
+      </a>
+
+      <nav class="nav" aria-label="Primary">
+        <a class="nav-link" href="index.html">Home</a>
+        <a class="nav-link" href="destinations.html">Destinations</a>
+        <a class="nav-link active" href="gallery.html">Gallery</a>
+        <a class="nav-link" href="pay.html">Payments</a>
+        <a class="nav-link" href="about.html">About</a>
+        <a class="nav-link" href="contact.html">Contact</a>
+      </nav>
+
+      <button class="nav-toggle" aria-label="Open menu" aria-expanded="false">
+        <span></span><span></span><span></span>
+      </button>
+    </div>
+  </header>
+
+  <main>
+    <section class="section">
+      <div class="container">
+        <div class="section-head">
+          <h1>Photo Gallery</h1>
+          <p class="muted">Add travel photos and captions. Stored locally in your browser (demo).</p>
+        </div>
+
+        <div class="card">
+          <div class="card-body">
+            <form id="addPhotoForm" class="form">
+              <div class="grid-2">
+                <label class="field">
+                  <span>Photo</span>
+                  <input type="file" accept="image/*" />
+                </label>
+
+                <label class="field">
+                  <span>Caption</span>
+                  <input name="caption" type="text" placeholder="e.g., Family beach day" />
+                </label>
+              </div>
+
+              <div class="form-actions">
+                <button class="btn btn-primary" type="submit">Add to gallery</button>
+                <a class="btn btn-ghost" href="destinations.html">Explore destinations</a>
+              </div>
+              <p class="form-note" id="galleryNote"></p>
+            </form>
+          </div>
+        </div>
+
+        <div class="g-grid" id="galleryGrid" aria-label="Gallery grid"></div>
+
+        <div class="note-box">
+          <strong>Want this to be real?</strong>
+          <p class="muted" style="margin:.4rem 0 0">
+            Next step is storing photos in Supabase Storage or S3 and saving metadata in a database.
+          </p>
+        </div>
+      </div>
+    </section>
+  </main>
+
+  <footer class="site-footer">
+    <div class="container footer-inner">
+      <p>© <span id="year"></span> New World Venture, LLC</p>
+      <span class="auth-chip">Signed in as: <strong data-auth-chip>Guest</strong></span>
+    </div>
+  </footer>
+
+  <script src="assets/js/data.js"></script>
+  <script src="assets/js/app.js"></script>
+</body>
+</html>

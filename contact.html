@@ -1,0 +1,85 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Contact — TripNest Lite</title>
+  <meta name="description" content="Contact TripNest Lite." />
+  <link rel="stylesheet" href="assets/css/styles.css" />
+</head>
+<body>
+  <header class="site-header">
+    <div class="container header-inner">
+      <a class="brand" href="index.html" aria-label="TripNest Lite Home">
+        <span class="brand-mark">✈️</span>
+        <span class="brand-text">New World Venture</span>
+      </a>
+
+      <nav class="nav" aria-label="Primary">
+        <a class="nav-link" href="index.html">Home</a>
+        <a class="nav-link" href="destinations.html">Destinations</a>
+        <a class="nav-link" href="gallery.html">Gallery</a>
+        <a class="nav-link" href="pay.html">Payments</a>
+        <a class="nav-link" href="about.html">About</a>
+        <a class="nav-link active" href="contact.html">Contact</a>
+      </nav>
+
+      <button class="nav-toggle" aria-label="Open menu" aria-expanded="false">
+        <span></span><span></span><span></span>
+      </button>
+    </div>
+  </header>
+
+  <main>
+    <section class="section">
+      <div class="container">
+        <div class="section-head">
+          <h1>Contact</h1>
+          <p class="muted">This form is front-end only (demo). It will show a success message and clear.</p>
+        </div>
+
+        <form id="contactForm" class="form wide">
+          <div class="grid-2">
+            <label class="field">
+              <span>Name</span>
+              <input name="name" type="text" required placeholder="Your name" />
+            </label>
+            <label class="field">
+              <span>Email</span>
+              <input name="email" type="email" required placeholder="you@example.com" />
+            </label>
+          </div>
+
+          <label class="field">
+            <span>Topic</span>
+            <select name="topic">
+              <option>Trip planning</option>
+              <option>Partnerships</option>
+              <option>Support</option>
+              <option>Other</option>
+            </select>
+          </label>
+
+          <label class="field">
+            <span>Message</span>
+            <textarea name="message" rows="6" required placeholder="Tell us what you’re looking for..."></textarea>
+          </label>
+
+          <button class="btn primary" type="submit">Send message</button>
+          <p class="form-note" id="contactNote" role="status" aria-live="polite"></p>
+        </form>
+      </div>
+    </section>
+  </main>
+
+  <footer class="site-footer">
+    <div class="container footer-inner">
+      <p>© <span id="year"></span> New World Venture, LLC</p>
+      <span class="auth-chip">Signed in as: <strong data-auth-chip>Guest</strong></span>
+    </div>
+  </footer>
+
+  <script src="assets/js/data.js"></script>
+  <script src="assets/js/app.js"></script>
+</body>
+</html>

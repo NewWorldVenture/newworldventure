@@ -1,0 +1,13 @@
+{
+  "name": "tripnest-lite",
+  "private": true,
+  "version": "1.0.0",
+  "description": "New World Venture, LLC travel website",
+  "scripts": {
+    "dev": "npx serve . -l 3000",
+    "start": "npx serve . -l 3000"
+  },
+  "dependencies": {
+    "stripe": "^16.12.0"
+  }
+}
