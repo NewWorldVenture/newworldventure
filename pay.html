@@ -33,15 +33,8 @@
     <section class="section">
       <div class="container">
         <div class="section-head">
-          <h1>Stripe Payments</h1>
+          <h1>Make Payment</h1>
           <p class="muted">Secure checkout via Stripe Checkout Sessions.</p>
-        </div>
-
-        <div class="note-box" style="margin-top:0">
-          <strong id="payStatus" class="status-line"></strong>
-          <p class="muted" style="margin:.35rem 0 0">
-            To go live: create 3 Prices in Stripe and paste the <em>price_*</em> IDs into this page.
-          </p>
         </div>
 
         <div class="price-grid" aria-label="Payment options">
@@ -96,12 +89,7 @@
 
         <p class="form-note" id="payNote"></p>
 
-        <div class="note-box">
-          <strong>Environment variable</strong>
-          <p class="muted" style="margin:.4rem 0 0">
-            Add <code>STRIPE_SECRET_KEY</code> in Vercel → Project Settings → Environment Variables.
-          </p>
-        </div>
+
       </div>
     </section>
   </main>
