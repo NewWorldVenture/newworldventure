@@ -37,7 +37,7 @@
           <p class="muted">Secure checkout via Stripe Checkout Sessions.</p>
         </div>
 
-        <div class="price-grid" aria-label="Payment options">
+        <div class="price-grid price-grid-4" aria-label="Payment options">
           <div class="price-card">
             <div class="price-top">
               <div>
@@ -85,11 +85,30 @@
             </ul>
             <button class="btn btn-primary" type="button" data-stripe-price="price_1T69I6GgxH6Dy9pRoeSjdrWo">Go VIP</button>
           </div>
+
+          <div class="price-card">
+            <div class="price-top">
+              <div>
+                <div class="price-title">Flex</div>
+                <div class="muted small">Enter any custom amount</div>
+              </div>
+              <div class="price-amt">$ Your Choice</div>
+            </div>
+            <ul class="price-list">
+              <li>Custom one-time payment</li>
+              <li>Stripe secure checkout</li>
+              <li>Email receipt</li>
+            </ul>
+            <label class="field" for="flexAmount">
+              <span>Amount (USD)</span>
+              <input id="flexAmount" type="number" min="0.50" step="0.01" inputmode="decimal" placeholder="Enter amount" />
+            </label>
+            <button class="btn btn-primary" type="button" data-stripe-price="price_1TDnkOGgxH6Dy9pRrtsTjnzg"> Pay Flex Amount</button>
+          </div>
         </div>
 
+        <p class="form-note" id="payStatus"></p>
         <p class="form-note" id="payNote"></p>
-
-
       </div>
     </section>
   </main>
