@@ -23,11 +23,18 @@ module.exports = async (req, res) => {
 
     let body = req.body;
     if (typeof body === 'string') {
-      try { body = JSON.parse(body); } catch (_) { body = null; }
+      try {
+        body = JSON.parse(body);
+      } catch (_) {
+        body = null;
+      }
     }
+
     if (!body) {
       res.statusCode = 400;
-      res.end(JSON.stringify({ error: 'Missing JSON body. Send { "priceId": "price_..." } or { "amount": 123.45 }' }));
+      res.end(JSON.stringify({
+        error: 'Missing JSON body. Send { "priceId": "price_..." } or { "amount": 123.45 }'
+      }));
       return;
     }
 
@@ -37,18 +44,30 @@ module.exports = async (req, res) => {
     const host = req.headers['x-forwarded-host'] || req.headers.host;
     const origin = `${proto}://${host}`;
 
-    let lineItems = null;
-
     const { priceId, amount } = body;
+
+    let sessionConfig = {
+      mode: 'payment',
+      success_url: `${origin}/pay.html?success=1`,
+      cancel_url: `${origin}/pay.html?canceled=1`,
+    };
+
     if (priceId) {
       if (typeof priceId !== 'string' || !priceId.startsWith('price_')) {
         res.statusCode = 400;
         res.end(JSON.stringify({ error: 'Invalid priceId' }));
         return;
       }
-      lineItems = [{ price: priceId, quantity: 1 }];
+
+      sessionConfig.line_items = [
+        { price: priceId, quantity: 1 }
+      ];
+
+      // OK for fixed-price products
+      sessionConfig.allow_promotion_codes = true;
     } else {
       const parsedAmount = Number(amount);
+
       if (!Number.isFinite(parsedAmount)) {
         res.statusCode = 400;
         res.end(JSON.stringify({ error: 'Invalid amount' }));
@@ -56,32 +75,35 @@ module.exports = async (req, res) => {
       }
 
       const unitAmount = Math.round(parsedAmount * 100);
+
       if (unitAmount < 50) {
         res.statusCode = 400;
         res.end(JSON.stringify({ error: 'Minimum amount is $0.50' }));
         return;
       }
 
-      lineItems = [{
-        price_data: {
-          currency: 'usd',
-          product_data: {
-            name: 'Flex Payment',
-            description: 'Custom payment amount'
+      sessionConfig.line_items = [
+        {
+          price_data: {
+            currency: 'usd',
+            product_data: {
+              name: 'Flex Payment',
+              description: 'Custom payment amount'
+            },
+            unit_amount: unitAmount
           },
-          unit_amount: unitAmount
-        },
-        quantity: 1
-      }];
+          quantity: 1
+        }
+      ];
+
+      // DO NOT enable promo codes for the custom amount flow
+      sessionConfig.metadata = {
+        payment_type: 'flex',
+        entered_amount: parsedAmount.toFixed(2)
+      };
     }
 
-    const session = await stripe.checkout.sessions.create({
-      mode: 'payment',
-      line_items: lineItems,
-      success_url: `${origin}/pay.html?success=1`,
-      cancel_url: `${origin}/pay.html?canceled=1`,
-      allow_promotion_codes: true
-    });
+    const session = await stripe.checkout.sessions.create(sessionConfig);
 
     res.statusCode = 200;
     res.end(JSON.stringify({ url: session.url }));
