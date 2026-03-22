@@ -4,122 +4,16 @@
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1" />
   <title>Payments — New World Venture</title>
-  <meta name="description" content="Stripe payments page (demo)." />
   <link rel="stylesheet" href="assets/css/styles.css" />
 </head>
-<body><header class="site-header">
-    <div class="container header-inner">
-      <a class="brand" href="index.html" aria-label="Home">
-        <span class="brand-mark">✈️</span>
-        <span class="brand-text">New World Venture</span>
-      </a>
+<body>
+<h1>Flex Payment</h1>
 
-      <nav class="nav" aria-label="Primary">
-        <a class="nav-link" href="index.html">Home</a>
-        <a class="nav-link" href="destinations.html">Destinations</a>
-        <a class="nav-link" href="gallery.html">Gallery</a>
-        <a class="nav-link active" href="pay.html">Payments</a>
-        <a class="nav-link" href="about.html">About</a>
-        <a class="nav-link" href="contact.html">Contact</a>
-      </nav>
+<input id="flexAmount" type="number" placeholder="Enter amount" />
+<button id="flexCheckoutBtn">Pay Flex Amount</button>
 
-      <button class="nav-toggle" aria-label="Open menu" aria-expanded="false">
-        <span></span><span></span><span></span>
-      </button>
-    </div>
-  </header>
+<p id="payNote"></p>
 
-  <main>
-    <section class="section">
-      <div class="container">
-        <div class="section-head">
-          <h1>Make Payment</h1>
-          <p class="muted">Secure checkout via Stripe Checkout Sessions.</p>
-        </div>
-
-        <div class="price-grid price-grid-4" aria-label="Payment options">
-          <div class="price-card">
-            <div class="price-top">
-              <div>
-                <div class="price-title">Trip Deposit</div>
-                <div class="muted small">Hold your spot</div>
-              </div>
-              <div class="price-amt">$500</div>
-            </div>
-            <ul class="price-list">
-              <li>Applied to your booking</li>
-              <li>Instant confirmation</li>
-              <li>Email receipt</li>
-            </ul>
-            <button class="btn btn-primary" type="button" data-stripe-price="price_1T69GcGgxH6Dy9pRRrSRkJt5">Pay deposit</button>
-          </div>
-
-          <div class="price-card">
-            <div class="price-top">
-              <div>
-                <div class="price-title">Planning Package</div>
-                <div class="muted small">Flights + hotel + itinerary</div>
-              </div>
-              <div class="price-amt">$1,499</div>
-            </div>
-            <ul class="price-list">
-              <li>Custom itinerary</li>
-              <li>Booking assistance</li>
-              <li>Priority support</li>
-            </ul>
-            <button class="btn btn-primary" type="button" data-stripe-price="price_1T69HVGgxH6Dy9pRcq2cQmgm">Buy package</button>
-          </div>
-
-          <div class="price-card">
-            <div class="price-top">
-              <div>
-                <div class="price-title">VIP Concierge</div>
-                <div class="muted small">White-glove service</div>
-              </div>
-              <div class="price-amt">$499</div>
-            </div>
-            <ul class="price-list">
-              <li>24/7 concierge</li>
-              <li>Upgrades & perks</li>
-              <li>VIP travel support</li>
-            </ul>
-            <button class="btn btn-primary" type="button" data-stripe-price="price_1T69I6GgxH6Dy9pRoeSjdrWo">Go VIP</button>
-          </div>
-
-          <div class="price-card">
-            <div class="price-top">
-              <div>
-                <div class="price-title">Flex</div>
-                <div class="muted small">Enter any custom amount</div>
-              </div>
-              <div class="price-amt">$ Your Choice</div>
-            </div>
-            <ul class="price-list">
-              <li>Custom one-time payment</li>
-              <li>Stripe secure checkout</li>
-              <li>Email receipt</li>
-            </ul>
-            <label class="field" for="flexAmount">
-              <span>Amount (USD)</span>
-              <input id="flexAmount" type="number" min="0.50" step="0.01" inputmode="decimal" placeholder="Enter amount" />
-            </label>
-            <button class="btn btn-primary" type="button" data-stripe-price="price_1TDnkOGgxH6Dy9pRrtsTjnzg"> Pay Flex Amount</button>
-          </div>
-        </div>
-
-        <p class="form-note" id="payStatus"></p>
-        <p class="form-note" id="payNote"></p>
-      </div>
-    </section>
-  </main>
-
-  <footer class="site-footer">
-    <div class="container footer-inner">
-      <p>© <span id="year"></span> New World Venture, LLC</p>
-    </div>
-  </footer>
-
-  <script src="assets/js/data.js"></script>
-  <script src="assets/js/app.js"></script>
+<script src="app_new.js"></script>
 </body>
 </html>
