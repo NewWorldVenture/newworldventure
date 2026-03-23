@@ -50,11 +50,10 @@ module.exports = async (req, res) => {
       mode: 'payment',
       success_url: `${origin}/pay.html?success=1`,
       cancel_url: `${origin}/pay.html?canceled=1`,
-      payment_intent_data: {
-        payment_method_options: {
-          card: {
-            request_three_d_secure: 'automatic'
-          }
+      payment_method_types: ['card'],
+      payment_method_options: {
+        card: {
+          request_three_d_secure: 'automatic'
         }
       }
     };
