@@ -13,14 +13,14 @@ const galleryNote = document.getElementById("galleryNote");
 
 if (galleryGrid) {
   const images = [
-    "atlantic-city.jpg",
-    "bermuda.jpg",
-    "cancun.jpg",
-    "disney.jpg",
+    "atlantic_city.jpeg",
+    "bermuda.jpeg",
+    "cancun.jpeg",
+    "disney.jpeg",
     "dominican.jpg",
     "greece.jpeg",
-    "new-york.jpg",
-    "philly.jpg"
+    "newyork.jpeg",
+    "philly.jpeg"
   ];
 
   galleryGrid.innerHTML = images.map((img) => `
