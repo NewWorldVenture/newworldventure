@@ -8,92 +8,159 @@
   const flexCheckoutBtn = $("#flexCheckoutBtn");
   const yearEl = $("#year");
 
-	const galleryGrid = document.getElementById("galleryGrid");
-const galleryNote = document.getElementById("galleryNote");
+  const galleryGrid = document.getElementById("galleryGrid");
+  if (galleryGrid) {
+    const images = [
+      "atlantic_city.jpeg",
+      "bermuda.jpeg",
+      "cancun.jpeg",
+      "disney.jpeg",
+      "dominican.jpeg",
+      "greece.jpeg",
+      "newyork.jpeg",
+      "philly.jpeg"
+    ];
 
-if (galleryGrid) {
-  const images = [
-    "atlantic_city.jpeg",
-    "bermuda.jpeg",
-    "cancun.jpeg",
-    "disney.jpeg",
-    "dominican.jpg",
-    "greece.jpeg",
-    "newyork.jpeg",
-    "philly.jpeg"
-  ];
-
-  galleryGrid.innerHTML = images.map((img) => `
-    <div class="gallery-item">
-      <img src="assets/img/${img}" alt="${img.replace(/\.[^/.]+$/, "").replace(/-/g, " ")}" loading="lazy" />
-    </div>
-  `).join("");
-
-  if (galleryNote) {
-    galleryNote.textContent = `${images.length} photos loaded from assets/img`;
+    galleryGrid.innerHTML = images.map((img) => `
+      <div class="gallery-item">
+        <img
+          src="assets/img/${img}"
+          alt="${img.replace(/\.[^/.]+$/, "").replace(/_/g, " ")}"
+          loading="lazy"
+        />
+      </div>
+    `).join("");
   }
-}
-	
-const viewport = document.getElementById("carViewport");
-const prevBtn = document.getElementById("carPrev");
-const nextBtn = document.getElementById("carNext");
 
-if (viewport && Array.isArray(window.TRIPNEST_DATA) && window.TRIPNEST_DATA.length) {
-  let currentIndex = 0;
-  let autoRotate;
+  const viewport = document.getElementById("carViewport");
+  const prevBtn = document.getElementById("carPrev");
+  const nextBtn = document.getElementById("carNext");
 
-  function renderSlide(index) {
-    const item = window.TRIPNEST_DATA[index];
+  if (viewport && Array.isArray(window.TRIPNEST_DATA) && window.TRIPNEST_DATA.length) {
+    let currentIndex = 0;
+    let autoRotate;
 
-    viewport.innerHTML = `
-      <div class="car-slide">
-        <div class="car-image" style="background-image: url('${item.image}'); background-size: cover; background-position: center;">
-        </div>
-        <div class="car-meta">
-          <div>
-            <div class="car-title">${item.name}</div>
-            <div class="car-sub">${item.region} • ${item.budget}</div>
+    function renderSlide(index) {
+      const item = window.TRIPNEST_DATA[index];
+
+      viewport.innerHTML = `
+        <div class="car-slide">
+          <div class="car-image" style="background-image:url('${item.image}'); background-size:cover; background-position:center;"></div>
+          <div class="car-meta">
+            <div>
+              <div class="car-title">${item.name}</div>
+              <div class="car-sub">${item.region} • ${item.budget}</div>
+            </div>
           </div>
         </div>
-      </div>
-    `;
-  }
+      `;
+    }
 
-  function showNext() {
-    currentIndex = (currentIndex + 1) % window.TRIPNEST_DATA.length;
+    function showNext() {
+      currentIndex = (currentIndex + 1) % window.TRIPNEST_DATA.length;
+      renderSlide(currentIndex);
+    }
+
+    function showPrev() {
+      currentIndex = (currentIndex - 1 + window.TRIPNEST_DATA.length) % window.TRIPNEST_DATA.length;
+      renderSlide(currentIndex);
+    }
+
+    function startAutoRotate() {
+      stopAutoRotate();
+      autoRotate = setInterval(showNext, 3000);
+    }
+
+    function stopAutoRotate() {
+      if (autoRotate) clearInterval(autoRotate);
+    }
+
+    nextBtn?.addEventListener("click", () => {
+      showNext();
+      startAutoRotate();
+    });
+
+    prevBtn?.addEventListener("click", () => {
+      showPrev();
+      startAutoRotate();
+    });
+
+    viewport.addEventListener("mouseenter", stopAutoRotate);
+    viewport.addEventListener("mouseleave", startAutoRotate);
+
     renderSlide(currentIndex);
-  }
-
-  function showPrev() {
-    currentIndex = (currentIndex - 1 + window.TRIPNEST_DATA.length) % window.TRIPNEST_DATA.length;
-    renderSlide(currentIndex);
-  }
-
-  function startAutoRotate() {
-    stopAutoRotate();
-    autoRotate = setInterval(showNext, 3000); // rotates every 3 seconds
-  }
-
-  function stopAutoRotate() {
-    if (autoRotate) clearInterval(autoRotate);
-  }
-
-  nextBtn?.addEventListener("click", () => {
-    showNext();
     startAutoRotate();
-  });
+  }
 
-  prevBtn?.addEventListener("click", () => {
-    showPrev();
-    startAutoRotate();
-  });
+  const searchInput = document.getElementById("searchInput");
+  const regionSelect = document.getElementById("regionSelect");
+  const budgetSelect = document.getElementById("budgetSelect");
+  const destCards = document.getElementById("destCards");
+  const emptyState = document.getElementById("emptyState");
 
-  viewport.addEventListener("mouseenter", stopAutoRotate);
-  viewport.addEventListener("mouseleave", startAutoRotate);
+  if (destCards && Array.isArray(window.TRIPNEST_DATA)) {
+    const data = window.TRIPNEST_DATA;
 
-  renderSlide(currentIndex);
-  startAutoRotate();
-}
+    if (regionSelect) {
+      const regions = [...new Set(data.map((item) => item.region))].sort();
+      regionSelect.innerHTML = `<option value="All">All</option>` +
+        regions.map((region) => `<option value="${region}">${region}</option>`).join("");
+    }
+
+    function cardTemplate(item) {
+      const highlights = (item.highlights || []).map((h) => `<li>${h}</li>`).join("");
+      const tags = (item.tags || []).map((tag) => `<span class="tag">${tag}</span>`).join("");
+
+      return `
+        <article class="card">
+          <img class="card-image" src="${item.image}" alt="${item.name}" loading="lazy" />
+          <div class="card-body">
+            <div class="card-top">
+              <h3>${item.name}</h3>
+              <span class="badge">${item.budget}</span>
+            </div>
+            <p class="muted">${item.region}</p>
+            <p>${item.blurb}</p>
+            <div class="tags">${tags}</div>
+            <ul class="feature-list">${highlights}</ul>
+          </div>
+        </article>
+      `;
+    }
+
+    function matchesFilters(item) {
+      const q = (searchInput?.value || "").trim().toLowerCase();
+      const selectedRegion = regionSelect?.value || "All";
+      const selectedBudget = budgetSelect?.value || "All";
+
+      const haystack = [
+        item.name,
+        item.region,
+        item.blurb,
+        ...(item.tags || []),
+        ...(item.highlights || [])
+      ].join(" ").toLowerCase();
+
+      const matchesSearch = !q || haystack.includes(q);
+      const matchesRegion = selectedRegion === "All" || item.region === selectedRegion;
+      const matchesBudget = selectedBudget === "All" || item.budget === selectedBudget;
+
+      return matchesSearch && matchesRegion && matchesBudget;
+    }
+
+    function renderDestinations() {
+      const filtered = data.filter(matchesFilters);
+
+      destCards.innerHTML = filtered.map(cardTemplate).join("");
+      if (emptyState) emptyState.hidden = filtered.length > 0;
+    }
+
+    searchInput?.addEventListener("input", renderDestinations);
+    regionSelect?.addEventListener("change", renderDestinations);
+    budgetSelect?.addEventListener("change", renderDestinations);
+
+    renderDestinations();
+  }
 
   if (yearEl) yearEl.textContent = String(new Date().getFullYear());
 
