@@ -8,6 +8,32 @@
   const flexCheckoutBtn = $("#flexCheckoutBtn");
   const yearEl = $("#year");
 
+	const galleryGrid = document.getElementById("galleryGrid");
+const galleryNote = document.getElementById("galleryNote");
+
+if (galleryGrid) {
+  const images = [
+    "atlantic-city.jpg",
+    "bermuda.jpg",
+    "cancun.jpg",
+    "disney.jpg",
+    "dominican.jpg",
+    "greece.jpeg",
+    "new-york.jpg",
+    "philly.jpg"
+  ];
+
+  galleryGrid.innerHTML = images.map((img) => `
+    <div class="gallery-item">
+      <img src="assets/img/${img}" alt="${img.replace(/\.[^/.]+$/, "").replace(/-/g, " ")}" loading="lazy" />
+    </div>
+  `).join("");
+
+  if (galleryNote) {
+    galleryNote.textContent = `${images.length} photos loaded from assets/img`;
+  }
+}
+	
 const viewport = document.getElementById("carViewport");
 const prevBtn = document.getElementById("carPrev");
 const nextBtn = document.getElementById("carNext");
