@@ -233,10 +233,9 @@ body.home{background:#070b12}
   height: 260px;
 }
 .car-image{
-  background:
-    radial-gradient(800px 260px at 10% 20%, rgba(110,231,255,.30), transparent 55%),
-    radial-gradient(700px 240px at 90% 25%, rgba(167,139,250,.22), transparent 60%),
-    rgba(255,255,255,.06);
+  background-size: cover;
+  background-position: center;
+  background-repeat: no-repeat;
   border-bottom:1px solid rgba(255,255,255,.14);
   position:relative;
 }

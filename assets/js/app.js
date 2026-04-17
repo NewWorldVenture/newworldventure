@@ -8,6 +8,67 @@
   const flexCheckoutBtn = $("#flexCheckoutBtn");
   const yearEl = $("#year");
 
+const viewport = document.getElementById("carViewport");
+const prevBtn = document.getElementById("carPrev");
+const nextBtn = document.getElementById("carNext");
+
+if (viewport && Array.isArray(window.TRIPNEST_DATA) && window.TRIPNEST_DATA.length) {
+  let currentIndex = 0;
+  let autoRotate;
+
+  function renderSlide(index) {
+    const item = window.TRIPNEST_DATA[index];
+
+    viewport.innerHTML = `
+      <div class="car-slide">
+        <div class="car-image" style="background-image: url('${item.image}'); background-size: cover; background-position: center;">
+        </div>
+        <div class="car-meta">
+          <div>
+            <div class="car-title">${item.name}</div>
+            <div class="car-sub">${item.region} • ${item.budget}</div>
+          </div>
+        </div>
+      </div>
+    `;
+  }
+
+  function showNext() {
+    currentIndex = (currentIndex + 1) % window.TRIPNEST_DATA.length;
+    renderSlide(currentIndex);
+  }
+
+  function showPrev() {
+    currentIndex = (currentIndex - 1 + window.TRIPNEST_DATA.length) % window.TRIPNEST_DATA.length;
+    renderSlide(currentIndex);
+  }
+
+  function startAutoRotate() {
+    stopAutoRotate();
+    autoRotate = setInterval(showNext, 3000); // rotates every 3 seconds
+  }
+
+  function stopAutoRotate() {
+    if (autoRotate) clearInterval(autoRotate);
+  }
+
+  nextBtn?.addEventListener("click", () => {
+    showNext();
+    startAutoRotate();
+  });
+
+  prevBtn?.addEventListener("click", () => {
+    showPrev();
+    startAutoRotate();
+  });
+
+  viewport.addEventListener("mouseenter", stopAutoRotate);
+  viewport.addEventListener("mouseleave", startAutoRotate);
+
+  renderSlide(currentIndex);
+  startAutoRotate();
+}
+
   if (yearEl) yearEl.textContent = String(new Date().getFullYear());
 
   if (payStatus) {
