@@ -113,7 +113,6 @@
 
       return `
         <article class="card">
-          <img class="card-image" src="${item.image}" alt="${item.name}" loading="lazy" />
           <div class="card-body">
             <div class="card-top">
               <h3>${item.name}</h3>
