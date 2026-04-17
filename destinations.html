@@ -1,84 +1,96 @@
 <!doctype html>
 <html lang="en">
-<head>
-  <meta charset="utf-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1" />
-  <title>Destinations — TripNest Lite</title>
-  <meta name="description" content="Browse demo travel destinations." />
-  <link rel="stylesheet" href="assets/css/styles.css" />
-</head>
-<body>
-  <header class="site-header">
-    <div class="container header-inner">
-      <a class="brand" href="index.html" aria-label="TripNest Lite Home">
-        <span class="brand-mark">✈️</span>
-        <span class="brand-text">New World Venture </span>
-      </a>
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>Destinations — New World Venture</title>
+    <meta
+      name="description"
+      content="Browse and filter travel destinations with a fast, client-side experience."
+    />
+    <link rel="stylesheet" href="assets/css/styles.css" />
+  </head>
+  <body>
+    <header class="site-header">
+      <div class="container header-inner">
+        <a class="brand" href="index.html" aria-label="New World Venture Home">
+          <span class="brand-mark">✈️</span>
+          <span class="brand-text">New World Venture</span>
+        </a>
 
-      <nav class="nav" aria-label="Primary">
-        <a class="nav-link" href="index.html">Home</a>
-        <a class="nav-link active" href="destinations.html">Destinations</a>
-        <a class="nav-link" href="gallery.html">Gallery</a>
-        <a class="nav-link" href="pay.html">Payments</a>
-        <a class="nav-link" href="about.html">About</a>
-        <a class="nav-link" href="contact.html">Contact</a>
-      </nav>
+        <nav class="nav" aria-label="Primary">
+          <a class="nav-link" href="index.html">Home</a>
+          <a class="nav-link active" href="destinations.html">Destinations</a>
+          <a class="nav-link" href="gallery.html">Gallery</a>
+          <a class="nav-link" href="pay.html">Payments</a>
+          <a class="nav-link" href="about.html">About</a>
+          <a class="nav-link" href="contact.html">Contact</a>
+        </nav>
 
-      <button class="nav-toggle" aria-label="Open menu" aria-expanded="false">
-        <span></span><span></span><span></span>
-      </button>
-    </div>
-  </header>
-
-  <main>
-    <section class="section">
-      <div class="container">
-        <div class="section-head">
-          <h1>Destinations</h1>
-          <p class="muted">Search and filter demo destinations — no backend required.</p>
-        </div>
-
-        <div class="filters">
-          <label class="field">
-            <span>Search</span>
-            <input id="searchInput" type="search" placeholder="Try: beach, food, family..." autocomplete="off" />
-          </label>
-
-          <label class="field">
-            <span>Region</span>
-            <select id="regionSelect">
-              <option value="All">All</option>
-            </select>
-          </label>
-
-          <label class="field">
-            <span>Budget</span>
-            <select id="budgetSelect">
-              <option value="All">All</option>
-              <option value="$">Budget</option>
-              <option value="$$">Mid</option>
-              <option value="$$$">Premium</option>
-            </select>
-          </label>
-        </div>
-
-        <div class="cards" id="destCards"></div>
-
-        <div class="note-box" id="emptyState" hidden>
-          <strong>No matches.</strong>
-          <p class="muted">Try a different search or switch the filters.</p>
-        </div>
+        <button class="nav-toggle" aria-label="Open menu" aria-expanded="false">
+          <span></span>
+          <span></span>
+          <span></span>
+        </button>
       </div>
-    </section>
-  </main>
+    </header>
 
-  <footer class="site-footer">
-    <div class="container footer-inner">
-      <p>© <span id="year"></span> New World Venture, LLC</p>
-    </div>
-  </footer>
+    <main>
+      <section class="section">
+        <div class="container">
+          <div class="section-head">
+            <h1>Destinations</h1>
+            <p class="muted">
+              Search and filter destinations with no backend required.
+            </p>
+          </div>
 
-  <script src="assets/js/data.js"></script>
-  <script src="assets/js/app.js"></script>
-</body>
+          <div class="filters">
+            <label class="field">
+              <span>Search</span>
+              <input
+                id="searchInput"
+                type="search"
+                placeholder="Try: beach, food, family..."
+                autocomplete="off"
+              />
+            </label>
+
+            <label class="field">
+              <span>Region</span>
+              <select id="regionSelect">
+                <option value="All">All</option>
+              </select>
+            </label>
+
+            <label class="field">
+              <span>Budget</span>
+              <select id="budgetSelect">
+                <option value="All">All</option>
+                <option value="$">Budget</option>
+                <option value="$$">Mid</option>
+                <option value="$$$">Premium</option>
+              </select>
+            </label>
+          </div>
+
+          <div class="cards" id="destCards"></div>
+
+          <div class="note-box" id="emptyState" hidden>
+            <strong>No matches.</strong>
+            <p class="muted">Try a different search or switch the filters.</p>
+          </div>
+        </div>
+      </section>
+    </main>
+
+    <footer class="site-footer">
+      <div class="container footer-inner">
+        <p>© <span id="year"></span> New World Venture, LLC</p>
+      </div>
+    </footer>
+
+    <script src="assets/js/data.js"></script>
+    <script src="assets/js/app.js"></script>
+  </body>
 </html>
