@@ -312,18 +312,34 @@ body.home{background:#070b12}
   color: rgba(255,255,255,.9);
   cursor:pointer;
 }
-.modal-body{padding: 1.1rem}
-.video-placeholder{
-  height: 360px;
-  border-radius: 1rem;
-  border:1px solid rgba(255,255,255,.14);
-  background: radial-gradient(600px 220px at 30% 20%, rgba(110,231,255,.20), transparent 55%),
-              radial-gradient(600px 220px at 70% 20%, rgba(167,139,250,.18), transparent 55%),
-              rgba(0,0,0,.22);
-  display:grid;
-  place-items:center;
-  text-align:center;
-  padding: 1.2rem;
+.video-modal {
+  display: none;
+  position: fixed;
+  z-index: 9999;
+  inset: 0;
+  background: rgba(0,0,0,0.9);
+  align-items: center;
+  justify-content: center;
+}
+
+.video-content {
+  position: relative;
+  width: 90%;
+  max-width: 900px;
+}
+
+.video-content video {
+  width: 100%;
+  border-radius: 12px;
+}
+
+#closeVideo {
+  position: absolute;
+  top: -40px;
+  right: 0;
+  font-size: 32px;
+  color: white;
+  cursor: pointer;
 }
 
 /* ---------- Existing pages (destinations/about/contact) ---------- */
