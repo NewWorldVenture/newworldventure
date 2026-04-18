@@ -312,36 +312,8 @@ body.home{background:#070b12}
   color: rgba(255,255,255,.9);
   cursor:pointer;
 }
-.video-modal {
-  display: none;
-  position: fixed;
-  z-index: 9999;
-  inset: 0;
-  background: rgba(0,0,0,0.9);
-  align-items: center;
-  justify-content: center;
-}
-
-.video-content {
-  position: relative;
-  width: 90%;
-  max-width: 900px;
-}
-
-.video-content video {
-  width: 100%;
-  border-radius: 12px;
-}
-
-#closeVideo {
-  position: absolute;
-  top: -40px;
-  right: 0;
-  font-size: 32px;
-  color: white;
-  cursor: pointer;
-}
-
+.modal-body{padding:1rem}
+.modal-body video{display:block; width:100%; border-radius:1rem; background:#000}
 /* ---------- Existing pages (destinations/about/contact) ---------- */
 .hero{padding: 3.5rem 0 2rem} /* legacy, unused on home now */
 .section{padding: 2rem 0 3.1rem}

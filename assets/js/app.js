@@ -1,6 +1,37 @@
 (function () {
   const $ = (sel) => document.querySelector(sel);
 
+  const navToggle = document.querySelector(".nav-toggle");
+  const primaryNav = document.querySelector("nav.nav");
+
+  if (navToggle && primaryNav) {
+    const closeMenu = () => {
+      primaryNav.classList.remove("open");
+      navToggle.setAttribute("aria-expanded", "false");
+      navToggle.setAttribute("aria-label", "Open menu");
+    };
+
+    navToggle.addEventListener("click", () => {
+      const isOpen = primaryNav.classList.toggle("open");
+      navToggle.setAttribute("aria-expanded", String(isOpen));
+      navToggle.setAttribute("aria-label", isOpen ? "Close menu" : "Open menu");
+    });
+
+    primaryNav.querySelectorAll("a").forEach((link) => {
+      link.addEventListener("click", closeMenu);
+    });
+
+    document.addEventListener("click", (event) => {
+      if (!primaryNav.contains(event.target) && !navToggle.contains(event.target)) {
+        closeMenu();
+      }
+    });
+
+    window.addEventListener("resize", () => {
+      if (window.innerWidth > 560) closeMenu();
+    });
+  }
+
   const payBtns = document.querySelectorAll("[data-stripe-price]");
   const payNote = $("#payNote");
   const payStatus = $("#payStatus");
@@ -8,31 +39,38 @@
   const flexCheckoutBtn = $("#flexCheckoutBtn");
   const yearEl = $("#year");
 
-const playBtn = document.getElementById("playVideoBtn");
-const modal = document.getElementById("videoModal");
-const closeBtn = document.getElementById("closeVideo");
-const video = document.getElementById("promoVideo");
+  const playBtn = document.getElementById("playVideoBtn");
+  const modal = document.getElementById("videoModal");
+  const closeBtns = document.querySelectorAll("[data-close='1']");
+  const video = document.getElementById("promoVideo");
 
-if (playBtn && modal && video) {
-  playBtn.addEventListener("click", () => {
-    modal.style.display = "flex";
-    video.play();
-  });
+  if (playBtn && modal && video) {
+    const openVideoModal = async () => {
+      modal.classList.add("show");
+      modal.setAttribute("aria-hidden", "false");
+      try {
+        await video.play();
+      } catch (_) {
+        // Ignore autoplay failures; user can still press play controls.
+      }
+    };
 
-  closeBtn.addEventListener("click", () => {
-    modal.style.display = "none";
-    video.pause();
-    video.currentTime = 0;
-  });
-
-  modal.addEventListener("click", (e) => {
-    if (e.target === modal) {
-      modal.style.display = "none";
+    const closeVideoModal = () => {
+      modal.classList.remove("show");
+      modal.setAttribute("aria-hidden", "true");
       video.pause();
       video.currentTime = 0;
-    }
-  });
-}
+    };
+
+    playBtn.addEventListener("click", openVideoModal);
+    closeBtns.forEach((btn) => btn.addEventListener("click", closeVideoModal));
+
+    document.addEventListener("keydown", (event) => {
+      if (event.key === "Escape" && modal.classList.contains("show")) {
+        closeVideoModal();
+      }
+    });
+  }
 
 
   const galleryGrid = document.getElementById("galleryGrid");
