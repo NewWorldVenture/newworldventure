@@ -1,5 +1,7 @@
 (function () {
   const $ = (sel) => document.querySelector(sel);
+  const nav = $(".nav");
+  const navToggle = $(".nav-toggle");
 
   const payBtns = document.querySelectorAll("[data-stripe-price]");
   const payNote = $("#payNote");
@@ -12,6 +14,22 @@ const playBtn = document.getElementById("playVideoBtn");
 const modal = document.getElementById("videoModal");
 const closeBtn = document.getElementById("closeVideo");
 const video = document.getElementById("promoVideo");
+
+if (nav && navToggle) {
+  navToggle.addEventListener("click", () => {
+    const isOpen = nav.classList.toggle("open");
+    navToggle.setAttribute("aria-expanded", String(isOpen));
+    navToggle.setAttribute("aria-label", isOpen ? "Close menu" : "Open menu");
+  });
+
+  nav.querySelectorAll("a").forEach((link) => {
+    link.addEventListener("click", () => {
+      nav.classList.remove("open");
+      navToggle.setAttribute("aria-expanded", "false");
+      navToggle.setAttribute("aria-label", "Open menu");
+    });
+  });
+}
 
 if (playBtn && modal && video) {
   playBtn.addEventListener("click", () => {
