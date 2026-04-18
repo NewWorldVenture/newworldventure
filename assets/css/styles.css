@@ -503,3 +503,15 @@ body.home{background:#070b12}
 @media (max-width: 900px){
   .price-grid-4{grid-template-columns: 1fr;}
 }
+
+
+.header-actions{display:flex; gap:.6rem; align-items:center}
+.is-hidden{display:none !important}
+
+.video-grid{display:grid; grid-template-columns:repeat(auto-fit,minmax(260px,1fr)); gap:1rem; margin-top:1rem}
+.video-item{border:1px solid var(--border); border-radius:1rem; padding:.8rem; background:rgba(255,255,255,.04)}
+.video-item video{width:100%; border-radius:.8rem; background:#000}
+.video-item h3{margin:.7rem 0 0; font-size:1rem}
+
+.admin-item{display:flex; justify-content:space-between; gap:1rem; padding:.55rem 0; border-bottom:1px solid rgba(255,255,255,.08)}
+.admin-item:last-child{border-bottom:none}
