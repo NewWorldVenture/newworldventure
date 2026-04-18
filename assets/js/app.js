@@ -13,23 +13,33 @@ const modal = document.getElementById("videoModal");
 const closeBtn = document.getElementById("closeVideo");
 const video = document.getElementById("promoVideo");
 
-if (playBtn && modal && video) {
-  playBtn.addEventListener("click", () => {
-    modal.style.display = "flex";
-    video.play();
-  });
-
-  closeBtn.addEventListener("click", () => {
-    modal.style.display = "none";
+if (playBtn && modal && closeBtn && video) {
+  function closeVideoModal() {
+    modal.classList.remove("show");
+    modal.setAttribute("aria-hidden", "true");
     video.pause();
     video.currentTime = 0;
+  }
+
+  playBtn.addEventListener("click", () => {
+    modal.classList.add("show");
+    modal.setAttribute("aria-hidden", "false");
+    video.play().catch(() => {
+      /* Browser may block autoplay until an additional user gesture. */
+    });
   });
+
+  closeBtn.addEventListener("click", closeVideoModal);
 
   modal.addEventListener("click", (e) => {
     if (e.target === modal) {
-      modal.style.display = "none";
-      video.pause();
-      video.currentTime = 0;
+      closeVideoModal();
+    }
+  });
+
+  document.addEventListener("keydown", (e) => {
+    if (e.key === "Escape" && modal.classList.contains("show")) {
+      closeVideoModal();
     }
   });
 }

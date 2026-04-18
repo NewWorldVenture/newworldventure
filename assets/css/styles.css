@@ -321,6 +321,9 @@ body.home{background:#070b12}
   align-items: center;
   justify-content: center;
 }
+.video-modal.show {
+  display: flex;
+}
 
 .video-content {
   position: relative;
@@ -333,13 +336,27 @@ body.home{background:#070b12}
   border-radius: 12px;
 }
 
-#closeVideo {
+.video-close-btn {
   position: absolute;
   top: -40px;
   right: 0;
   font-size: 32px;
   color: white;
   cursor: pointer;
+  border: 0;
+  background: transparent;
+}
+
+.sr-only {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  padding: 0;
+  margin: -1px;
+  overflow: hidden;
+  clip: rect(0, 0, 0, 0);
+  white-space: nowrap;
+  border: 0;
 }
 
 /* ---------- Existing pages (destinations/about/contact) ---------- */
