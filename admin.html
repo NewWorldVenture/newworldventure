@@ -1,0 +1,82 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Admin — New World Venture</title>
+  <meta name="description" content="Admin editor for photos and videos." />
+  <link rel="stylesheet" href="assets/css/styles.css" />
+</head>
+<body>
+  <header class="site-header">
+    <div class="container header-inner">
+      <a class="brand" href="index.html" aria-label="New World Venture Home">
+        <span class="brand-mark">✈️</span>
+        <span class="brand-text">New World Venture</span>
+      </a>
+
+      <nav class="nav" aria-label="Primary">
+        <a class="nav-link" href="index.html">Home</a>
+        <a class="nav-link" href="destinations.html">Destinations</a>
+        <a class="nav-link" href="gallery.html">Gallery</a>
+        <a class="nav-link" href="videos.html">Videos</a>
+        <a class="nav-link active" href="admin.html">Admin</a>
+        <a class="nav-link" href="login.html">Login</a>
+      </nav>
+      <a class="btn btn-ghost" id="bannerAuthBtn" href="login.html">Login</a>
+    </div>
+  </header>
+
+  <main>
+    <section class="section">
+      <div class="container">
+        <div class="section-head">
+          <h1>Admin</h1>
+          <p class="muted">Edit existing photos and videos shown on the site.</p>
+        </div>
+
+        <h2>Existing Photos</h2>
+        <table class="table" style="width:100%; margin-bottom:20px;">
+          <thead>
+            <tr><th align="left">Title</th><th align="left">File</th><th align="left">Action</th></tr>
+          </thead>
+          <tbody id="photosTableBody"></tbody>
+        </table>
+
+        <form id="photoEditForm" class="form wide" style="margin-bottom:40px;">
+          <input id="photoEditIndex" type="hidden" />
+          <label class="field"><span>Photo title</span><input id="photoTitle" type="text" required /></label>
+          <label class="field"><span>Photo file path</span><input id="photoFile" type="text" required /></label>
+          <button class="btn btn-primary" type="submit">Update Photo</button>
+        </form>
+
+        <h2>Existing Videos</h2>
+        <table class="table" style="width:100%; margin-bottom:20px;">
+          <thead>
+            <tr><th align="left">Title</th><th align="left">File</th><th align="left">Action</th></tr>
+          </thead>
+          <tbody id="videosTableBody"></tbody>
+        </table>
+
+        <form id="videoEditForm" class="form wide">
+          <input id="videoEditIndex" type="hidden" />
+          <label class="field"><span>Video title</span><input id="videoTitle" type="text" required /></label>
+          <label class="field"><span>Video file path</span><input id="videoFile" type="text" required /></label>
+          <button class="btn btn-primary" type="submit">Update Video</button>
+        </form>
+
+        <p class="form-note" id="adminNote" role="status" aria-live="polite"></p>
+      </div>
+    </section>
+  </main>
+
+  <footer class="site-footer">
+    <div class="container footer-inner">
+      <p>© <span id="year"></span> New World Venture, LLC</p>
+    </div>
+  </footer>
+
+  <script src="assets/js/data.js"></script>
+  <script src="assets/js/app.js"></script>
+</body>
+</html>
