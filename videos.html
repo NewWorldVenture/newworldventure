@@ -3,8 +3,8 @@
 <head>
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1" />
-  <title>Contact — TripNest Lite</title>
-  <meta name="description" content="New World Venture." />
+  <title>Videos — New World Venture</title>
+  <meta name="description" content="Video gallery for New World Venture." />
   <link rel="stylesheet" href="assets/css/styles.css" />
 </head>
 <body>
@@ -19,11 +19,14 @@
         <a class="nav-link" href="index.html">Home</a>
         <a class="nav-link" href="destinations.html">Destinations</a>
         <a class="nav-link" href="gallery.html">Gallery</a>
-        <a class="nav-link" href="videos.html">Videos</a>
+        <a class="nav-link active" href="videos.html">Videos</a>
         <a class="nav-link" href="pay.html">Payments</a>
         <a class="nav-link" href="about.html">About</a>
-        <a class="nav-link active" href="contact.html">Contact</a>
+        <a class="nav-link" href="contact.html">Contact</a>
+        <a class="nav-link admin-only" hidden href="admin.html">Admin</a>
       </nav>
+
+      <a class="btn btn-primary" href="login.html">Login</a>
 
       <button class="nav-toggle" aria-label="Open menu" aria-expanded="false">
         <span></span><span></span><span></span>
@@ -35,40 +38,11 @@
     <section class="section">
       <div class="container">
         <div class="section-head">
-          <h1>Contact</h1>
-          <p class="muted">&nbsp;</p>
+          <h1>Videos</h1>
+          <p class="muted">Watch featured trips and newly uploaded admin videos.</p>
         </div>
 
-        <form id="contactForm" class="form wide">
-          <div class="grid-2">
-            <label class="field">
-              <span>Name</span>
-              <input name="name" type="text" required placeholder="Your name" />
-            </label>
-            <label class="field">
-              <span>Email</span>
-              <input name="email" type="email" required placeholder="you@example.com" />
-            </label>
-          </div>
-
-          <label class="field">
-            <span>Topic</span>
-            <select name="topic">
-              <option>Trip planning</option>
-              <option>Partnerships</option>
-              <option>Support</option>
-              <option>Other</option>
-            </select>
-          </label>
-
-          <label class="field">
-            <span>Message</span>
-            <textarea name="message" rows="6" required placeholder="Tell us what you’re looking for..."></textarea>
-          </label>
-
-          <button class="btn primary" type="submit">Send message</button>
-          <p class="form-note" id="contactNote" role="status" aria-live="polite"></p>
-        </form>
+        <div class="cards" id="videosGrid" aria-label="Videos grid"></div>
       </div>
     </section>
   </main>

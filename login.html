@@ -3,8 +3,8 @@
 <head>
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1" />
-  <title>Contact — TripNest Lite</title>
-  <meta name="description" content="New World Venture." />
+  <title>Login — New World Venture</title>
+  <meta name="description" content="Google-only login for admin access." />
   <link rel="stylesheet" href="assets/css/styles.css" />
 </head>
 <body>
@@ -22,7 +22,8 @@
         <a class="nav-link" href="videos.html">Videos</a>
         <a class="nav-link" href="pay.html">Payments</a>
         <a class="nav-link" href="about.html">About</a>
-        <a class="nav-link active" href="contact.html">Contact</a>
+        <a class="nav-link" href="contact.html">Contact</a>
+        <a class="nav-link admin-only" hidden href="admin.html">Admin</a>
       </nav>
 
       <button class="nav-toggle" aria-label="Open menu" aria-expanded="false">
@@ -33,42 +34,26 @@
 
   <main>
     <section class="section">
-      <div class="container">
-        <div class="section-head">
-          <h1>Contact</h1>
-          <p class="muted">&nbsp;</p>
+      <div class="container auth-shell">
+        <div class="note-box auth-card">
+          <h1>Google Login</h1>
+          <p class="muted">Only Google sign-in is supported. After authenticating with Google, verify the email used to continue.</p>
+
+          <p><a class="btn btn-primary" href="https://accounts.google.com/" target="_blank" rel="noopener noreferrer">Continue with Google</a></p>
+
+          <form id="googleAuthForm" class="form">
+            <label class="field">
+              <span>Google email used for login</span>
+              <input type="email" name="googleEmail" placeholder="name@gmail.com" required />
+            </label>
+            <button class="btn btn-primary" type="submit">Verify Login</button>
+            <button class="btn btn-ghost" id="signOutBtn" type="button">Sign out</button>
+            <p class="form-note" id="loginNote"></p>
+          </form>
+
+          <p class="muted small" id="currentAuthStatus"></p>
+          <p class="muted small">Admin access is granted only when the account is <strong>Daniel.Hughen@gmail.com</strong>.</p>
         </div>
-
-        <form id="contactForm" class="form wide">
-          <div class="grid-2">
-            <label class="field">
-              <span>Name</span>
-              <input name="name" type="text" required placeholder="Your name" />
-            </label>
-            <label class="field">
-              <span>Email</span>
-              <input name="email" type="email" required placeholder="you@example.com" />
-            </label>
-          </div>
-
-          <label class="field">
-            <span>Topic</span>
-            <select name="topic">
-              <option>Trip planning</option>
-              <option>Partnerships</option>
-              <option>Support</option>
-              <option>Other</option>
-            </select>
-          </label>
-
-          <label class="field">
-            <span>Message</span>
-            <textarea name="message" rows="6" required placeholder="Tell us what you’re looking for..."></textarea>
-          </label>
-
-          <button class="btn primary" type="submit">Send message</button>
-          <p class="form-note" id="contactNote" role="status" aria-live="polite"></p>
-        </form>
       </div>
     </section>
   </main>

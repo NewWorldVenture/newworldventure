@@ -21,12 +21,18 @@
         <nav class="nav nav-glass" aria-label="Primary">
           <a class="nav-link active" href="index.html">Home</a>
           <a class="nav-link" href="destinations.html">Destination</a>
-		  <a class="nav-link" href="gallery.html">Gallery</a>
-		  <a class="nav-link" href="pay.html">Payments</a>
-			<a class="nav-link" href="about.html">Our Services</a>
+          <a class="nav-link" href="gallery.html">Gallery</a>
+          <a class="nav-link" href="videos.html">Videos</a>
+          <a class="nav-link" href="pay.html">Payments</a>
+          <a class="nav-link" href="about.html">Our Services</a>
+          <a class="nav-link admin-only" hidden href="admin.html">Admin</a>
         </nav>
 
-        <a class="btn btn-ghost" href="contact.html">Contact Us Now</a>
+        <div class="header-actions">
+          <a class="btn btn-ghost" href="contact.html">Contact Us Now</a>
+          <a class="btn btn-primary" href="login.html">Login</a>
+          <span data-auth-slot></span>
+        </div>
 
         <button class="nav-toggle" aria-label="Open menu" aria-expanded="false">
           <span></span><span></span><span></span>
@@ -37,10 +43,9 @@
     <section class="glass-shell container" aria-label="Hero">
       <div class="glass-panel">
         <div class="hero-layout">
-          <!-- Left copy -->
           <div class="hero-left">
-			<h1 class="hero-title">
-            Take the Journey Beyond<br />
+            <h1 class="hero-title">
+              Take the Journey Beyond<br />
               Your Imagination
             </h1>
 
@@ -68,20 +73,16 @@
             </div>
           </div>
 
-          <!-- Right carousel -->
           <aside class="hero-right" aria-label="Featured destinations">
             <div class="carousel">
               <button class="car-btn" id="carPrev" aria-label="Previous destination">‹</button>
 
-              <div class="car-viewport" id="carViewport">
-                <!-- Filled by JS -->
-              </div>
+              <div class="car-viewport" id="carViewport"></div>
 
               <button class="car-btn" id="carNext" aria-label="Next destination">›</button>
             </div>
 
-            <div class="social-row" aria-label="Social links">
-            </div>
+            <div class="social-row" aria-label="Social links"></div>
           </aside>
         </div>
       </div>
@@ -91,36 +92,18 @@
       <p class="muted small">© <span id="year"></span> New World Venture, LLC</p>
     </footer>
 
-    <!-- Lightweight modal for "Play the video" -->
-    <div class="modal" id="videoModal" aria-hidden="true" role="dialog" aria-label="Video modal">
-      <div class="modal-backdrop" data-close="1"></div>
-      <div class="modal-card" role="document">
-        <div class="modal-head">
-          <strong>Demo video</strong>
-          <button class="modal-close" type="button" data-close="1" aria-label="Close">✕</button>
-        </div>
-        <div class="modal-body">
-          <div class="video-placeholder">
-            <div class="play-ico big">▶</div>
-            <p class="muted">This is a placeholder. Replace with an embedded YouTube/Vimeo iframe later.</p>
-          </div>
-        </div>
+    <div id="videoModal" class="video-modal">
+      <div class="video-content">
+        <span id="closeVideo">&times;</span>
+        <video id="promoVideo" controls>
+          <source src="assets/vid/mexico.mp4" type="video/mp4">
+          Your browser does not support the video tag.
+        </video>
       </div>
     </div>
   </main>
 
   <script src="assets/js/data.js"></script>
   <script src="assets/js/app.js"></script>
-	
-	<div id="videoModal" class="video-modal">
-  <div class="video-content">
-    <span id="closeVideo">&times;</span>
-    <video id="promoVideo" controls>
-      <source src="assets/vid/mexico.mp4" type="video/mp4">
-      Your browser does not support the video tag.
-    </video>
-  </div>
-</div>
-	
 </body>
 </html>

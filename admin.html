@@ -1,0 +1,111 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Admin — New World Venture</title>
+  <meta name="description" content="Admin tools for managing destinations and media." />
+  <link rel="stylesheet" href="assets/css/styles.css" />
+</head>
+<body>
+  <header class="site-header">
+    <div class="container header-inner">
+      <a class="brand" href="index.html" aria-label="New World Venture Home">
+        <span class="brand-mark">✈️</span>
+        <span class="brand-text">New World Venture</span>
+      </a>
+
+      <nav class="nav" aria-label="Primary">
+        <a class="nav-link" href="index.html">Home</a>
+        <a class="nav-link" href="destinations.html">Destinations</a>
+        <a class="nav-link" href="gallery.html">Gallery</a>
+        <a class="nav-link" href="videos.html">Videos</a>
+        <a class="nav-link" href="pay.html">Payments</a>
+        <a class="nav-link" href="about.html">About</a>
+        <a class="nav-link" href="contact.html">Contact</a>
+        <a class="nav-link active admin-only" href="admin.html">Admin</a>
+      </nav>
+
+      <button class="nav-toggle" aria-label="Open menu" aria-expanded="false">
+        <span></span><span></span><span></span>
+      </button>
+    </div>
+  </header>
+
+  <main>
+    <section class="section">
+      <div class="container">
+        <div class="section-head">
+          <h1>Admin Controls</h1>
+          <p class="muted">Upload images/videos and manage every destination field.</p>
+        </div>
+
+        <div class="cards">
+          <article class="card">
+            <div class="card-body">
+              <h3>Destination Manager</h3>
+              <label class="field">
+                <span>Select destination to edit</span>
+                <select id="destinationSelector"></select>
+              </label>
+
+              <form id="destinationAdminForm" class="form">
+                <label class="field"><span>ID</span><input name="id" type="text" required /></label>
+                <label class="field"><span>Name</span><input name="name" type="text" required /></label>
+                <label class="field"><span>Region</span><input name="region" type="text" required /></label>
+                <label class="field"><span>Budget</span>
+                  <select name="budget">
+                    <option value="$">$</option>
+                    <option value="$$">$$</option>
+                    <option value="$$$">$$$</option>
+                  </select>
+                </label>
+                <label class="field"><span>Image URL</span><input name="image" type="text" required /></label>
+                <label class="field"><span>Blurb</span><textarea name="blurb" rows="3"></textarea></label>
+                <label class="field"><span>Highlights (comma-separated)</span><input name="highlights" type="text" /></label>
+                <label class="field"><span>Tags (comma-separated)</span><input name="tags" type="text" /></label>
+                <label class="field"><span>Sample days (comma-separated)</span><input name="sampleDays" type="text" /></label>
+                <button class="btn btn-primary" type="submit">Save Destination</button>
+                <p class="form-note" id="adminSaveNote"></p>
+              </form>
+            </div>
+          </article>
+
+          <article class="card">
+            <div class="card-body">
+              <h3>Media Uploads</h3>
+
+              <form id="adminImageUploadForm" class="form">
+                <label class="field">
+                  <span>Add photo to Gallery</span>
+                  <input id="adminImageFile" type="file" accept="image/*" required />
+                </label>
+                <button class="btn btn-primary" type="submit">Upload Photo</button>
+              </form>
+
+              <form id="adminVideoUploadForm" class="form">
+                <label class="field">
+                  <span>Add video to Videos page</span>
+                  <input id="adminVideoFile" type="file" accept="video/*" required />
+                </label>
+                <button class="btn btn-primary" type="submit">Upload Video</button>
+              </form>
+
+              <p class="form-note" id="adminMediaNote"></p>
+            </div>
+          </article>
+        </div>
+      </div>
+    </section>
+  </main>
+
+  <footer class="site-footer">
+    <div class="container footer-inner">
+      <p>© <span id="year"></span> New World Venture, LLC</p>
+    </div>
+  </footer>
+
+  <script src="assets/js/data.js"></script>
+  <script src="assets/js/app.js"></script>
+</body>
+</html>
