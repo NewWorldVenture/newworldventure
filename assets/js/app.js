@@ -1,5 +1,7 @@
 (function () {
   const $ = (sel) => document.querySelector(sel);
+  const AUTH_KEY = "nwv_admin_auth";
+  const ADMIN_EMAIL = "Daniel.Hughen@gmail.com";
 
   const payBtns = document.querySelectorAll("[data-stripe-price]");
   const payNote = $("#payNote");
@@ -8,45 +10,261 @@
   const flexCheckoutBtn = $("#flexCheckoutBtn");
   const yearEl = $("#year");
 
-const playBtn = document.getElementById("playVideoBtn");
-const modal = document.getElementById("videoModal");
-const closeBtn = document.getElementById("closeVideo");
-const video = document.getElementById("promoVideo");
+  function isAdminAuthenticated() {
+    return localStorage.getItem(AUTH_KEY) === "1";
+  }
 
-if (playBtn && modal && video) {
-  playBtn.addEventListener("click", () => {
-    modal.style.display = "flex";
-    video.play();
-  });
+  function setAdminAuthenticated(state) {
+    localStorage.setItem(AUTH_KEY, state ? "1" : "0");
+  }
 
-  closeBtn.addEventListener("click", () => {
-    modal.style.display = "none";
-    video.pause();
-    video.currentTime = 0;
-  });
+  function getCurrentPage() {
+    const path = window.location.pathname.split("/").pop();
+    return path || "index.html";
+  }
 
-  modal.addEventListener("click", (e) => {
-    if (e.target === modal) {
+  function parseJwt(token) {
+    try {
+      const base64Url = token.split(".")[1];
+      const base64 = base64Url.replace(/-/g, "+").replace(/_/g, "/");
+      return JSON.parse(decodeURIComponent(atob(base64).split("").map((c) => `%${(`00${c.charCodeAt(0).toString(16)}`).slice(-2)}`).join("")));
+    } catch {
+      return null;
+    }
+  }
+
+  function appendNavLink(nav, href, label, type, activeWhen) {
+    const existing = nav.querySelector(`a[href='${href}']`);
+    if (existing) {
+      existing.dataset.navType = type;
+      if (activeWhen === href) existing.classList.add("active");
+      return existing;
+    }
+
+    const link = document.createElement("a");
+    link.className = "nav-link";
+    link.href = href;
+    link.textContent = label;
+    link.dataset.navType = type;
+    if (activeWhen === href) link.classList.add("active");
+    nav.appendChild(link);
+    return link;
+  }
+
+  function ensureGoogleScript() {
+    if (window.google?.accounts?.id) return;
+    if (document.querySelector("script[data-google-signin='1']")) return;
+    const script = document.createElement("script");
+    script.src = "https://accounts.google.com/gsi/client";
+    script.async = true;
+    script.defer = true;
+    script.dataset.googleSignin = "1";
+    document.head.appendChild(script);
+  }
+
+  function updateAuthUI() {
+    const authenticated = isAdminAuthenticated();
+    document.body.classList.toggle("admin-authenticated", authenticated);
+
+    document.querySelectorAll(".nav .nav-link").forEach((link) => {
+      if (!link.dataset.navType) {
+        const href = link.getAttribute("href") || "";
+        link.dataset.navType = href.includes("admin.html") ? "admin" : "public";
+      }
+    });
+
+    document.querySelectorAll("[data-nav-type='public'], [data-nav-type='admin']").forEach((el) => {
+      const type = el.dataset.navType;
+      const show = authenticated ? type === "admin" : type === "public";
+      el.classList.toggle("auth-hidden", !show);
+    });
+
+    document.querySelectorAll(".auth-btn").forEach((btn) => {
+      btn.textContent = authenticated ? "Logout" : "Login";
+      btn.setAttribute("aria-label", authenticated ? "Logout" : "Login");
+    });
+
+    const page = getCurrentPage();
+    if (authenticated && page !== "admin.html") {
+      window.location.href = "admin.html";
+      return;
+    }
+
+    if (!authenticated && page === "admin.html") {
+      const adminGate = document.getElementById("adminGate");
+      const adminContent = document.getElementById("adminContent");
+      if (adminGate) adminGate.hidden = false;
+      if (adminContent) adminContent.hidden = true;
+    }
+  }
+
+  function buildGlobalNav() {
+    const nav = document.querySelector(".nav[aria-label='Primary']");
+    const headerInner = document.querySelector(".header-inner, .glass-inner");
+    if (!nav || !headerInner) return;
+
+    const page = getCurrentPage();
+    nav.querySelectorAll("a").forEach((link) => {
+      const href = link.getAttribute("href") || "";
+      link.dataset.navType = href.includes("admin.html") ? "admin" : "public";
+      if (href === page) link.classList.add("active");
+    });
+
+    appendNavLink(nav, "videos.html", "Videos", "public", page);
+    appendNavLink(nav, "admin.html", "Admin", "admin", page);
+
+    let authBtn = headerInner.querySelector("#globalAuthBtn");
+    if (!authBtn) {
+      authBtn = document.createElement("button");
+      authBtn.id = "globalAuthBtn";
+      authBtn.className = "btn btn-ghost auth-btn";
+      authBtn.type = "button";
+      headerInner.insertBefore(authBtn, headerInner.querySelector(".nav-toggle") || null);
+    }
+
+    authBtn.addEventListener("click", () => {
+      if (isAdminAuthenticated()) {
+        setAdminAuthenticated(false);
+        updateAuthUI();
+        if (getCurrentPage() === "admin.html") {
+          window.location.href = "index.html";
+        }
+        return;
+      }
+
+      ensureGoogleScript();
+      const attemptLogin = () => {
+        if (!window.google?.accounts?.id) {
+          window.setTimeout(attemptLogin, 200);
+          return;
+        }
+
+        window.google.accounts.id.initialize({
+          client_id: "YOUR_GOOGLE_CLIENT_ID.apps.googleusercontent.com",
+          callback: (response) => {
+            const payload = parseJwt(response.credential || "");
+            if (payload?.email && payload.email.toLowerCase() === ADMIN_EMAIL.toLowerCase()) {
+              setAdminAuthenticated(true);
+              updateAuthUI();
+              window.location.href = "admin.html";
+            } else {
+              alert("Access denied.");
+            }
+          }
+        });
+
+        window.google.accounts.id.prompt();
+      };
+
+      attemptLogin();
+    });
+  }
+
+  function initVideosPage() {
+    const videosGrid = document.getElementById("videosGrid");
+    if (!videosGrid || !Array.isArray(window.TRIPNEST_VIDEOS)) return;
+
+    videosGrid.innerHTML = window.TRIPNEST_VIDEOS.map((video) => `
+      <article class="video-card">
+        <video controls preload="metadata" poster="${video.poster}">
+          <source src="${video.src}" type="video/mp4" />
+        </video>
+        <div class="video-meta">
+          <h3>${video.title}</h3>
+          <p class="muted">${video.description}</p>
+        </div>
+      </article>
+    `).join("");
+  }
+
+  function initAdminPage() {
+    const tabs = document.querySelectorAll(".admin-tab");
+    const panels = document.querySelectorAll(".admin-panel");
+    const gate = document.getElementById("adminGate");
+    const content = document.getElementById("adminContent");
+    if (!tabs.length || !panels.length || !gate || !content) return;
+
+    if (!isAdminAuthenticated()) {
+      gate.hidden = false;
+      content.hidden = true;
+      return;
+    }
+
+    gate.hidden = true;
+    content.hidden = false;
+
+    const destBody = document.getElementById("adminDestinationsBody");
+    if (destBody && Array.isArray(window.TRIPNEST_DATA)) {
+      destBody.innerHTML = window.TRIPNEST_DATA.map((item) => `
+        <tr>
+          <td>${item.name}</td>
+          <td>${item.region}</td>
+          <td>${item.budget}</td>
+          <td>${(item.tags || []).join(", ")}</td>
+        </tr>
+      `).join("");
+    }
+
+    const photoBody = document.getElementById("adminPhotosBody");
+    if (photoBody && Array.isArray(window.TRIPNEST_PHOTOS)) {
+      photoBody.innerHTML = window.TRIPNEST_PHOTOS.map((photo) => `
+        <tr>
+          <td>${photo.title}</td>
+          <td>${photo.file}</td>
+          <td>${photo.category}</td>
+        </tr>
+      `).join("");
+    }
+
+    const videoBody = document.getElementById("adminVideosBody");
+    if (videoBody && Array.isArray(window.TRIPNEST_VIDEOS)) {
+      videoBody.innerHTML = window.TRIPNEST_VIDEOS.map((video) => `
+        <tr>
+          <td>${video.title}</td>
+          <td>${video.src}</td>
+          <td>${video.description}</td>
+        </tr>
+      `).join("");
+    }
+
+    tabs.forEach((tab) => {
+      tab.addEventListener("click", () => {
+        const target = tab.dataset.tab;
+        tabs.forEach((t) => t.classList.toggle("active", t === tab));
+        panels.forEach((panel) => panel.hidden = panel.dataset.panel !== target);
+      });
+    });
+  }
+
+  const playBtn = document.getElementById("playVideoBtn");
+  const modal = document.getElementById("videoModal");
+  const closeBtn = document.getElementById("closeVideo");
+  const video = document.getElementById("promoVideo");
+
+  if (playBtn && modal && video) {
+    playBtn.addEventListener("click", () => {
+      modal.style.display = "flex";
+      video.play();
+    });
+
+    closeBtn?.addEventListener("click", () => {
       modal.style.display = "none";
       video.pause();
       video.currentTime = 0;
-    }
-  });
-}
+    });
 
+    modal.addEventListener("click", (e) => {
+      if (e.target === modal) {
+        modal.style.display = "none";
+        video.pause();
+        video.currentTime = 0;
+      }
+    });
+  }
 
   const galleryGrid = document.getElementById("galleryGrid");
   if (galleryGrid) {
-    const images = [
-      "atlantic_city.jpeg",
-      "bermuda.jpeg",
-      "cancun.jpeg",
-      "disney.jpeg",
-      "dominican.jpeg",
-      "greece.jpeg",
-      "newyork.jpeg",
-      "philly.jpeg"
-    ];
+    const images = (window.TRIPNEST_PHOTOS || []).map((photo) => photo.file);
 
     galleryGrid.innerHTML = images.map((img) => `
       <div class="gallery-item">
@@ -250,4 +468,9 @@ if (playBtn && modal && video) {
       }
     });
   }
+
+  buildGlobalNav();
+  updateAuthUI();
+  initVideosPage();
+  initAdminPage();
 })();
