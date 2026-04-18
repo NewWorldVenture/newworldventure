@@ -1,0 +1,131 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Admin — New World Venture</title>
+  <meta name="description" content="Admin tools for managing destinations." />
+  <link rel="stylesheet" href="assets/css/styles.css" />
+</head>
+<body>
+  <header class="site-header">
+    <div class="container header-inner">
+      <a class="brand" href="index.html" aria-label="New World Venture Home">
+        <span class="brand-mark">✈️</span>
+        <span class="brand-text">New World Venture </span>
+      </a>
+
+      <nav class="nav" aria-label="Primary">
+        <a class="nav-link" href="index.html">Home</a>
+        <a class="nav-link" href="destinations.html">Destinations</a>
+        <a class="nav-link active" href="admin.html">Admin</a>
+        <a class="nav-link" href="gallery.html">Gallery</a>
+        <a class="nav-link" href="pay.html">Payments</a>
+        <a class="nav-link" href="about.html">About</a>
+        <a class="nav-link" href="contact.html">Contact</a>
+      </nav>
+
+      <button class="nav-toggle" aria-label="Open menu" aria-expanded="false">
+        <span></span><span></span><span></span>
+      </button>
+    </div>
+  </header>
+
+  <main>
+    <section class="section">
+      <div class="container">
+        <div class="section-head">
+          <h1>Destination Admin</h1>
+          <p class="muted">Only Daniel.Hughen@gmail.com can add or edit destinations.</p>
+        </div>
+
+        <div class="note-box" id="adminNotice">
+          <strong>Admin authorization required.</strong>
+          <p class="muted">Enter the admin email to unlock all destination fields.</p>
+        </div>
+
+        <div class="filters">
+          <label class="field" style="max-width: 420px;">
+            <span>Admin Email</span>
+            <input id="adminEmail" type="email" placeholder="name@example.com" autocomplete="email" />
+          </label>
+          <div style="display:flex; align-items:flex-end; gap:8px;">
+            <button class="btn btn-primary" id="unlockAdminBtn" type="button">Unlock</button>
+          </div>
+        </div>
+
+        <div class="filters">
+          <label class="field">
+            <span>Modify Existing Destination</span>
+            <select id="destinationSelect" disabled>
+              <option value="">Choose a destination...</option>
+            </select>
+          </label>
+        </div>
+
+        <form id="destinationForm" autocomplete="off">
+          <div class="filters">
+            <label class="field">
+              <span>ID</span>
+              <input id="id" name="id" type="text" required disabled />
+            </label>
+            <label class="field">
+              <span>Name</span>
+              <input id="name" name="name" type="text" required disabled />
+            </label>
+            <label class="field">
+              <span>Region</span>
+              <input id="region" name="region" type="text" required disabled />
+            </label>
+          </div>
+
+          <div class="filters">
+            <label class="field">
+              <span>Budget ($ / $$ / $$$)</span>
+              <input id="budget" name="budget" type="text" required disabled />
+            </label>
+            <label class="field">
+              <span>Image Path</span>
+              <input id="image" name="image" type="text" required disabled />
+            </label>
+            <label class="field">
+              <span>Blurb</span>
+              <input id="blurb" name="blurb" type="text" required disabled />
+            </label>
+          </div>
+
+          <div class="filters">
+            <label class="field">
+              <span>Highlights (comma separated)</span>
+              <input id="highlights" name="highlights" type="text" disabled />
+            </label>
+            <label class="field">
+              <span>Tags (comma separated)</span>
+              <input id="tags" name="tags" type="text" disabled />
+            </label>
+            <label class="field">
+              <span>Sample Days (comma separated)</span>
+              <input id="sampleDays" name="sampleDays" type="text" disabled />
+            </label>
+          </div>
+
+          <div style="display:flex; gap:12px; flex-wrap:wrap; margin-top:1rem;">
+            <button class="btn btn-primary" id="saveDestinationBtn" type="submit" disabled>Save Destination</button>
+            <button class="btn btn-ghost" id="newDestinationBtn" type="button" disabled>Add New Destination</button>
+          </div>
+        </form>
+      </div>
+    </section>
+  </main>
+
+  <footer class="site-footer">
+    <div class="container footer-inner">
+      <p>© <span id="year"></span> New World Venture, LLC</p>
+    </div>
+  </footer>
+
+  <script src="assets/js/data.js"></script>
+  <script src="assets/js/app.js"></script>
+  <script src="assets/js/admin.js"></script>
+</body>
+</html>
