@@ -1,42 +1,239 @@
 (function () {
   const $ = (sel) => document.querySelector(sel);
 
-  const payBtns = document.querySelectorAll("[data-stripe-price]");
-  const payNote = $("#payNote");
-  const payStatus = $("#payStatus");
-  const flexAmountInput = $("#flexAmount");
-  const flexCheckoutBtn = $("#flexCheckoutBtn");
-  const yearEl = $("#year");
+  const AUTH_STORAGE_KEY = "nwv_auth_user";
+  const MEDIA_STORAGE_KEY = "nwv_uploaded_media";
+  const ADMIN_EMAIL = "daniel.hughen@gmail.com";
 
-const playBtn = document.getElementById("playVideoBtn");
-const modal = document.getElementById("videoModal");
-const closeBtn = document.getElementById("closeVideo");
-const video = document.getElementById("promoVideo");
-
-if (playBtn && modal && video) {
-  playBtn.addEventListener("click", () => {
-    modal.style.display = "flex";
-    video.play();
-  });
-
-  closeBtn.addEventListener("click", () => {
-    modal.style.display = "none";
-    video.pause();
-    video.currentTime = 0;
-  });
-
-  modal.addEventListener("click", (e) => {
-    if (e.target === modal) {
-      modal.style.display = "none";
-      video.pause();
-      video.currentTime = 0;
+  function safeJSONParse(value, fallback) {
+    try {
+      return JSON.parse(value);
+    } catch {
+      return fallback;
     }
-  });
-}
+  }
 
+  function getCurrentUser() {
+    return safeJSONParse(localStorage.getItem(AUTH_STORAGE_KEY), null);
+  }
 
-  const galleryGrid = document.getElementById("galleryGrid");
-  if (galleryGrid) {
+  function setCurrentUser(user) {
+    localStorage.setItem(AUTH_STORAGE_KEY, JSON.stringify(user));
+  }
+
+  function clearCurrentUser() {
+    localStorage.removeItem(AUTH_STORAGE_KEY);
+  }
+
+  function normalizeEmail(email) {
+    return String(email || "").trim().toLowerCase();
+  }
+
+  function isAdminUser(user) {
+    return normalizeEmail(user?.email) === ADMIN_EMAIL;
+  }
+
+  function getUploadedMedia() {
+    return safeJSONParse(localStorage.getItem(MEDIA_STORAGE_KEY), []);
+  }
+
+  function setUploadedMedia(mediaList) {
+    localStorage.setItem(MEDIA_STORAGE_KEY, JSON.stringify(mediaList));
+  }
+
+  function decodeJwt(token) {
+    if (!token || token.split(".").length < 2) return null;
+
+    try {
+      const payload = token.split(".")[1];
+      const normalized = payload.replace(/-/g, "+").replace(/_/g, "/");
+      const pad = normalized.length % 4 ? "=".repeat(4 - (normalized.length % 4)) : "";
+      const decoded = atob(normalized + pad);
+      return JSON.parse(decoded);
+    } catch {
+      return null;
+    }
+  }
+
+  function refreshAuthUI() {
+    const user = getCurrentUser();
+    const loginBtn = document.getElementById("loginBtn");
+    const adminLinks = document.querySelectorAll("[data-admin-link]");
+    const userGreeting = document.getElementById("userGreeting");
+
+    adminLinks.forEach((link) => {
+      link.classList.toggle("is-hidden", !isAdminUser(user));
+    });
+
+    if (loginBtn) {
+      if (user?.email) {
+        loginBtn.textContent = "Logout";
+        loginBtn.setAttribute("href", "#");
+        loginBtn.onclick = (event) => {
+          event.preventDefault();
+          clearCurrentUser();
+          window.location.reload();
+        };
+      } else {
+        loginBtn.textContent = "Login";
+        loginBtn.setAttribute("href", "login.html");
+        loginBtn.onclick = null;
+      }
+    }
+
+    if (userGreeting) {
+      userGreeting.textContent = user?.email ? `Signed in as ${user.email}` : "Not signed in.";
+    }
+  }
+
+  function initGoogleLogin() {
+    const googleSignInTarget = document.getElementById("googleSignInBtn");
+    if (!googleSignInTarget) return;
+
+    const clientId = googleSignInTarget.dataset.googleClientId || "";
+    const loginStatus = document.getElementById("loginStatus");
+
+    if (!window.google?.accounts?.id) {
+      if (loginStatus) {
+        loginStatus.textContent = "Google Sign-In script not loaded. Please refresh.";
+      }
+      return;
+    }
+
+    if (!clientId || clientId === "YOUR_GOOGLE_CLIENT_ID") {
+      if (loginStatus) {
+        loginStatus.textContent = "Set a valid Google Client ID in login.html before using login.";
+      }
+      return;
+    }
+
+    window.google.accounts.id.initialize({
+      client_id: clientId,
+      callback: (response) => {
+        const payload = decodeJwt(response?.credential);
+
+        if (!payload?.email) {
+          if (loginStatus) loginStatus.textContent = "Unable to read Google account email.";
+          return;
+        }
+
+        const user = {
+          email: normalizeEmail(payload.email),
+          name: payload.name || "",
+          picture: payload.picture || "",
+          provider: "google"
+        };
+
+        setCurrentUser(user);
+        window.location.href = "index.html";
+      }
+    });
+
+    window.google.accounts.id.renderButton(googleSignInTarget, {
+      theme: "outline",
+      size: "large",
+      shape: "pill",
+      text: "signin_with",
+      width: 260
+    });
+  }
+
+  async function fileToDataUrl(file) {
+    return await new Promise((resolve, reject) => {
+      const reader = new FileReader();
+      reader.onload = () => resolve(String(reader.result || ""));
+      reader.onerror = () => reject(new Error("Unable to read selected file."));
+      reader.readAsDataURL(file);
+    });
+  }
+
+  function initAdminPage() {
+    const adminPanel = document.getElementById("adminPanel");
+    if (!adminPanel) return;
+
+    const user = getCurrentUser();
+    const noAccess = document.getElementById("adminNoAccess");
+    const adminUploadForm = document.getElementById("adminUploadForm");
+    const adminFileInput = document.getElementById("adminFile");
+    const adminTitleInput = document.getElementById("adminTitle");
+    const adminUploadStatus = document.getElementById("adminUploadStatus");
+    const adminMediaList = document.getElementById("adminMediaList");
+
+    function renderAdminUploads() {
+      const uploads = getUploadedMedia();
+
+      if (!adminMediaList) return;
+      if (!uploads.length) {
+        adminMediaList.innerHTML = `<p class="muted">No uploads yet.</p>`;
+        return;
+      }
+
+      adminMediaList.innerHTML = uploads
+        .slice()
+        .reverse()
+        .map((item) => `
+          <article class="admin-item">
+            <strong>${item.title}</strong>
+            <span class="muted small">${item.type.toUpperCase()} • ${new Date(item.uploadedAt).toLocaleString()}</span>
+          </article>
+        `)
+        .join("");
+    }
+
+    if (!isAdminUser(user)) {
+      adminPanel.classList.add("is-hidden");
+      if (noAccess) noAccess.classList.remove("is-hidden");
+      return;
+    }
+
+    if (noAccess) noAccess.classList.add("is-hidden");
+    adminPanel.classList.remove("is-hidden");
+    renderAdminUploads();
+
+    adminUploadForm?.addEventListener("submit", async (event) => {
+      event.preventDefault();
+
+      const file = adminFileInput?.files?.[0];
+      const title = String(adminTitleInput?.value || "").trim();
+
+      if (!file) {
+        if (adminUploadStatus) adminUploadStatus.textContent = "Please choose an image or video file.";
+        return;
+      }
+
+      const mediaType = file.type.startsWith("image/") ? "image" : file.type.startsWith("video/") ? "video" : "";
+      if (!mediaType) {
+        if (adminUploadStatus) adminUploadStatus.textContent = "Only image or video uploads are allowed.";
+        return;
+      }
+
+      try {
+        if (adminUploadStatus) adminUploadStatus.textContent = "Uploading…";
+        const src = await fileToDataUrl(file);
+        const uploads = getUploadedMedia();
+
+        uploads.push({
+          id: `upload-${Date.now()}`,
+          title: title || file.name,
+          type: mediaType,
+          src,
+          uploadedAt: new Date().toISOString()
+        });
+
+        setUploadedMedia(uploads);
+        adminUploadForm.reset();
+        if (adminUploadStatus) adminUploadStatus.textContent = "Upload complete.";
+        renderAdminUploads();
+      } catch (error) {
+        if (adminUploadStatus) adminUploadStatus.textContent = String(error?.message || error);
+      }
+    });
+  }
+
+  function initGalleryPage() {
+    const galleryGrid = document.getElementById("galleryGrid");
+    if (!galleryGrid) return;
+
     const images = [
       "atlantic_city.jpeg",
       "bermuda.jpeg",
@@ -48,15 +245,95 @@ if (playBtn && modal && video) {
       "philly.jpeg"
     ];
 
-    galleryGrid.innerHTML = images.map((img) => `
+    const defaultImageCards = images.map((img) => ({
+      src: `assets/img/${img}`,
+      alt: img.replace(/\.[^/.]+$/, "").replace(/_/g, " ")
+    }));
+
+    const uploadedImageCards = getUploadedMedia()
+      .filter((item) => item.type === "image")
+      .map((item) => ({ src: item.src, alt: item.title }));
+
+    const cards = [...defaultImageCards, ...uploadedImageCards];
+
+    galleryGrid.innerHTML = cards
+      .map(
+        (item) => `
       <div class="gallery-item">
         <img
-          src="assets/img/${img}"
-          alt="${img.replace(/\.[^/.]+$/, "").replace(/_/g, " ")}"
+          src="${item.src}"
+          alt="${item.alt}"
           loading="lazy"
         />
       </div>
-    `).join("");
+    `
+      )
+      .join("");
+  }
+
+  function initVideosPage() {
+    const videoGrid = document.getElementById("videoGrid");
+    if (!videoGrid) return;
+
+    const defaultVideos = [
+      {
+        title: "Mexico Highlights",
+        src: "assets/vid/mexico.mp4"
+      }
+    ];
+
+    const uploadedVideos = getUploadedMedia()
+      .filter((item) => item.type === "video")
+      .map((item) => ({ title: item.title, src: item.src }));
+
+    const videos = [...defaultVideos, ...uploadedVideos];
+
+    videoGrid.innerHTML = videos
+      .map(
+        (item) => `
+      <article class="video-item">
+        <video controls preload="metadata">
+          <source src="${item.src}" type="video/mp4" />
+          Your browser does not support the video tag.
+        </video>
+        <h3>${item.title}</h3>
+      </article>
+    `
+      )
+      .join("");
+  }
+
+  const payBtns = document.querySelectorAll("[data-stripe-price]");
+  const payNote = $("#payNote");
+  const payStatus = $("#payStatus");
+  const flexAmountInput = $("#flexAmount");
+  const flexCheckoutBtn = $("#flexCheckoutBtn");
+  const yearEl = $("#year");
+
+  const playBtn = document.getElementById("playVideoBtn");
+  const modal = document.getElementById("videoModal");
+  const closeBtn = document.getElementById("closeVideo");
+  const video = document.getElementById("promoVideo");
+
+  if (playBtn && modal && video) {
+    playBtn.addEventListener("click", () => {
+      modal.style.display = "flex";
+      video.play();
+    });
+
+    closeBtn?.addEventListener("click", () => {
+      modal.style.display = "none";
+      video.pause();
+      video.currentTime = 0;
+    });
+
+    modal.addEventListener("click", (e) => {
+      if (e.target === modal) {
+        modal.style.display = "none";
+        video.pause();
+        video.currentTime = 0;
+      }
+    });
   }
 
   const viewport = document.getElementById("carViewport");
@@ -130,7 +407,8 @@ if (playBtn && modal && video) {
 
     if (regionSelect) {
       const regions = [...new Set(data.map((item) => item.region))].sort();
-      regionSelect.innerHTML = `<option value="All">All</option>` +
+      regionSelect.innerHTML =
+        `<option value="All">All</option>` +
         regions.map((region) => `<option value="${region}">${region}</option>`).join("");
     }
 
@@ -159,13 +437,9 @@ if (playBtn && modal && video) {
       const selectedRegion = regionSelect?.value || "All";
       const selectedBudget = budgetSelect?.value || "All";
 
-      const haystack = [
-        item.name,
-        item.region,
-        item.blurb,
-        ...(item.tags || []),
-        ...(item.highlights || [])
-      ].join(" ").toLowerCase();
+      const haystack = [item.name, item.region, item.blurb, ...(item.tags || []), ...(item.highlights || [])]
+        .join(" ")
+        .toLowerCase();
 
       const matchesSearch = !q || haystack.includes(q);
       const matchesRegion = selectedRegion === "All" || item.region === selectedRegion;
@@ -250,4 +524,10 @@ if (playBtn && modal && video) {
       }
     });
   }
+
+  refreshAuthUI();
+  initGoogleLogin();
+  initGalleryPage();
+  initVideosPage();
+  initAdminPage();
 })();

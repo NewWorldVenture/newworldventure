@@ -3,8 +3,8 @@
 <head>
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1" />
-  <title>Contact — TripNest Lite</title>
-  <meta name="description" content="New World Venture." />
+  <title>Admin — New World Venture</title>
+  <meta name="description" content="Admin uploads for New World Venture." />
   <link rel="stylesheet" href="assets/css/styles.css" />
 </head>
 <body>
@@ -20,9 +20,7 @@
         <a class="nav-link" href="destinations.html">Destinations</a>
         <a class="nav-link" href="gallery.html">Gallery</a>
         <a class="nav-link" href="videos.html">Videos</a>
-        <a class="nav-link" href="pay.html">Payments</a>
-        <a class="nav-link" href="about.html">About</a>
-        <a class="nav-link active" href="contact.html">Contact</a>
+        <a class="nav-link active" href="admin.html">Admin</a>
       </nav>
 
       <a class="nav-link is-hidden" data-admin-link href="admin.html">Admin</a>
@@ -37,41 +35,39 @@
   <main>
     <section class="section">
       <div class="container">
-        <div class="section-head">
-          <h1>Contact</h1>
-          <p class="muted">&nbsp;</p>
+        <div id="adminNoAccess" class="note-box is-hidden">
+          <strong>Access denied.</strong>
+          <p class="muted">Only Daniel.Hughen@gmail.com can access this page. Please login with Google using that email.</p>
         </div>
 
-        <form id="contactForm" class="form wide">
-          <div class="grid-2">
-            <label class="field">
-              <span>Name</span>
-              <input name="name" type="text" required placeholder="Your name" />
-            </label>
-            <label class="field">
-              <span>Email</span>
-              <input name="email" type="email" required placeholder="you@example.com" />
-            </label>
+        <div id="adminPanel" class="is-hidden">
+          <div class="section-head">
+            <h1>Admin Media Uploads</h1>
+            <p>Upload pictures or videos to publish on the Gallery and Videos pages.</p>
           </div>
 
-          <label class="field">
-            <span>Topic</span>
-            <select name="topic">
-              <option>Trip planning</option>
-              <option>Partnerships</option>
-              <option>Support</option>
-              <option>Other</option>
-            </select>
-          </label>
+          <form id="adminUploadForm" class="form wide">
+            <label class="field">
+              <span>Title</span>
+              <input id="adminTitle" type="text" placeholder="Enter a title" />
+            </label>
 
-          <label class="field">
-            <span>Message</span>
-            <textarea name="message" rows="6" required placeholder="Tell us what you’re looking for..."></textarea>
-          </label>
+            <label class="field">
+              <span>Image or Video</span>
+              <input id="adminFile" type="file" accept="image/*,video/*" required />
+            </label>
 
-          <button class="btn primary" type="submit">Send message</button>
-          <p class="form-note" id="contactNote" role="status" aria-live="polite"></p>
-        </form>
+            <div>
+              <button class="btn btn-primary" type="submit">Upload Media</button>
+            </div>
+            <p class="form-note" id="adminUploadStatus"></p>
+          </form>
+
+          <div class="note-box">
+            <h2>Uploaded Media</h2>
+            <div id="adminMediaList"></div>
+          </div>
+        </div>
       </div>
     </section>
   </main>

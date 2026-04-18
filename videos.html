@@ -3,23 +3,23 @@
 <head>
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1" />
-  <title>Destinations — TripNest Lite</title>
-  <meta name="description" content="Browse demo travel destinations." />
+  <title>Videos — New World Venture</title>
+  <meta name="description" content="Travel videos from New World Venture." />
   <link rel="stylesheet" href="assets/css/styles.css" />
 </head>
 <body>
   <header class="site-header">
     <div class="container header-inner">
-      <a class="brand" href="index.html" aria-label="TripNest Lite Home">
+      <a class="brand" href="index.html" aria-label="New World Venture Home">
         <span class="brand-mark">✈️</span>
-        <span class="brand-text">New World Venture </span>
+        <span class="brand-text">New World Venture</span>
       </a>
 
       <nav class="nav" aria-label="Primary">
         <a class="nav-link" href="index.html">Home</a>
-        <a class="nav-link active" href="destinations.html">Destinations</a>
+        <a class="nav-link" href="destinations.html">Destinations</a>
         <a class="nav-link" href="gallery.html">Gallery</a>
-        <a class="nav-link" href="videos.html">Videos</a>
+        <a class="nav-link active" href="videos.html">Videos</a>
         <a class="nav-link" href="pay.html">Payments</a>
         <a class="nav-link" href="about.html">About</a>
         <a class="nav-link" href="contact.html">Contact</a>
@@ -38,39 +38,10 @@
     <section class="section">
       <div class="container">
         <div class="section-head">
-          <h1>Destinations</h1>
+          <h1>Video Library</h1>
+          <p>Watch featured trip reels and newly uploaded videos.</p>
         </div>
-
-        <div class="filters">
-          <label class="field">
-            <span>Search</span>
-            <input id="searchInput" type="search" placeholder="Try: beach, food, family..." autocomplete="off" />
-          </label>
-
-          <label class="field">
-            <span>Region</span>
-            <select id="regionSelect">
-              <option value="All">All</option>
-            </select>
-          </label>
-
-          <label class="field">
-            <span>Budget</span>
-            <select id="budgetSelect">
-              <option value="All">All</option>
-              <option value="$">Budget</option>
-              <option value="$$">Mid</option>
-              <option value="$$$">Premium</option>
-            </select>
-          </label>
-        </div>
-
-        <div class="cards" id="destCards"></div>
-
-        <div class="note-box" id="emptyState" hidden>
-          <strong>No matches.</strong>
-          <p class="muted">Try a different search or switch the filters.</p>
-        </div>
+        <div class="video-grid" id="videoGrid" aria-label="Video grid"></div>
       </div>
     </section>
   </main>
