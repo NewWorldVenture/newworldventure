@@ -8,51 +8,256 @@
   const flexCheckoutBtn = $("#flexCheckoutBtn");
   const yearEl = $("#year");
 
-const playBtn = document.getElementById("playVideoBtn");
-const modal = document.getElementById("videoModal");
-const closeBtn = document.getElementById("closeVideo");
-const video = document.getElementById("promoVideo");
+  const ADMIN_EMAIL = "Daniel.Hughen@gmail.com";
+  const ADMIN_AUTH_KEY = "nwv_admin_logged_in";
+  const PHOTOS_KEY = "nwv_admin_photos";
+  const VIDEOS_KEY = "nwv_admin_videos";
 
-if (playBtn && modal && video) {
-  playBtn.addEventListener("click", () => {
-    modal.style.display = "flex";
-    video.play();
-  });
+  const playBtn = document.getElementById("playVideoBtn");
+  const modal = document.getElementById("videoModal");
+  const closeBtn = document.getElementById("closeVideo");
+  const video = document.getElementById("promoVideo");
 
-  closeBtn.addEventListener("click", () => {
-    modal.style.display = "none";
-    video.pause();
-    video.currentTime = 0;
-  });
+  if (playBtn && modal && video) {
+    playBtn.addEventListener("click", () => {
+      modal.style.display = "flex";
+      video.play();
+    });
 
-  modal.addEventListener("click", (e) => {
-    if (e.target === modal) {
+    closeBtn?.addEventListener("click", () => {
       modal.style.display = "none";
       video.pause();
       video.currentTime = 0;
-    }
-  });
-}
+    });
 
+    modal.addEventListener("click", (e) => {
+      if (e.target === modal) {
+        modal.style.display = "none";
+        video.pause();
+        video.currentTime = 0;
+      }
+    });
+  }
+
+  function isAdminLoggedIn() {
+    return localStorage.getItem(ADMIN_AUTH_KEY) === "1";
+  }
+
+  function setAdminLoggedIn(value) {
+    if (value) {
+      localStorage.setItem(ADMIN_AUTH_KEY, "1");
+    } else {
+      localStorage.removeItem(ADMIN_AUTH_KEY);
+    }
+  }
+
+  function wireBannerAuthButton() {
+    const btn = document.getElementById("bannerAuthBtn");
+    if (!btn) return;
+
+    const refresh = () => {
+      const loggedIn = isAdminLoggedIn();
+      btn.textContent = loggedIn ? "Logout" : "Login";
+      btn.setAttribute("href", loggedIn ? "#" : "login.html");
+    };
+
+    btn.addEventListener("click", (e) => {
+      if (isAdminLoggedIn()) {
+        e.preventDefault();
+        setAdminLoggedIn(false);
+        refresh();
+        if (window.location.pathname.endsWith("admin.html")) {
+          window.location.href = "login.html";
+        }
+      }
+    });
+
+    refresh();
+  }
+
+  function getDefaultPhotos() {
+    return [
+      { title: "Atlantic City", file: "assets/img/atlantic_city.jpeg" },
+      { title: "Bermuda", file: "assets/img/bermuda.jpeg" },
+      { title: "Cancun", file: "assets/img/cancun.jpeg" }
+    ];
+  }
+
+  function getDefaultVideos() {
+    return [
+      { title: "Mexico Trip", file: "assets/vid/mexico.mp4" },
+      { title: "Resort Preview", file: "assets/vid/Mexico.mp4" }
+    ];
+  }
+
+  function getEditableList(key, defaults) {
+    const raw = localStorage.getItem(key);
+    if (!raw) {
+      localStorage.setItem(key, JSON.stringify(defaults));
+      return defaults;
+    }
+
+    try {
+      const parsed = JSON.parse(raw);
+      if (!Array.isArray(parsed)) throw new Error("Invalid");
+      return parsed;
+    } catch {
+      localStorage.setItem(key, JSON.stringify(defaults));
+      return defaults;
+    }
+  }
+
+  function saveEditableList(key, list) {
+    localStorage.setItem(key, JSON.stringify(list));
+  }
+
+  function setupLogin() {
+    const loginForm = document.getElementById("adminLoginForm");
+    if (!loginForm) return;
+
+    const emailEl = document.getElementById("adminEmail");
+    const note = document.getElementById("loginNote");
+
+    loginForm.addEventListener("submit", (e) => {
+      e.preventDefault();
+      const entered = (emailEl?.value || "").trim().toLowerCase();
+
+      if (entered === ADMIN_EMAIL.toLowerCase()) {
+        setAdminLoggedIn(true);
+        if (note) note.textContent = "Login successful. Redirecting to Admin...";
+        window.setTimeout(() => {
+          window.location.href = "admin.html";
+        }, 300);
+      } else if (note) {
+        setAdminLoggedIn(false);
+        note.textContent = "Access denied. Please use an authorized admin account.";
+      }
+    });
+  }
+
+  function setupAdminEditors() {
+    const photosBody = document.getElementById("photosTableBody");
+    const videosBody = document.getElementById("videosTableBody");
+    if (!photosBody || !videosBody) return;
+
+    if (!isAdminLoggedIn()) {
+      window.location.href = "login.html";
+      return;
+    }
+
+    let photos = getEditableList(PHOTOS_KEY, getDefaultPhotos());
+    let videos = getEditableList(VIDEOS_KEY, getDefaultVideos());
+
+    const photoTitle = document.getElementById("photoTitle");
+    const photoFile = document.getElementById("photoFile");
+    const photoIndex = document.getElementById("photoEditIndex");
+    const photoForm = document.getElementById("photoEditForm");
+
+    const videoTitle = document.getElementById("videoTitle");
+    const videoFile = document.getElementById("videoFile");
+    const videoIndex = document.getElementById("videoEditIndex");
+    const videoForm = document.getElementById("videoEditForm");
+
+    const adminNote = document.getElementById("adminNote");
+
+    function renderRows() {
+      photosBody.innerHTML = photos
+        .map((item, idx) => `
+          <tr>
+            <td>${item.title}</td>
+            <td><code>${item.file}</code></td>
+            <td><button type="button" class="btn btn-ghost admin-edit-photo" data-index="${idx}">Edit</button></td>
+          </tr>
+        `)
+        .join("");
+
+      videosBody.innerHTML = videos
+        .map((item, idx) => `
+          <tr>
+            <td>${item.title}</td>
+            <td><code>${item.file}</code></td>
+            <td><button type="button" class="btn btn-ghost admin-edit-video" data-index="${idx}">Edit</button></td>
+          </tr>
+        `)
+        .join("");
+    }
+
+    photosBody.addEventListener("click", (e) => {
+      const target = e.target;
+      if (!(target instanceof HTMLElement)) return;
+      if (!target.matches(".admin-edit-photo")) return;
+
+      const idx = Number(target.getAttribute("data-index"));
+      const item = photos[idx];
+      if (!item) return;
+      photoIndex.value = String(idx);
+      photoTitle.value = item.title;
+      photoFile.value = item.file;
+    });
+
+    videosBody.addEventListener("click", (e) => {
+      const target = e.target;
+      if (!(target instanceof HTMLElement)) return;
+      if (!target.matches(".admin-edit-video")) return;
+
+      const idx = Number(target.getAttribute("data-index"));
+      const item = videos[idx];
+      if (!item) return;
+      videoIndex.value = String(idx);
+      videoTitle.value = item.title;
+      videoFile.value = item.file;
+    });
+
+    photoForm?.addEventListener("submit", (e) => {
+      e.preventDefault();
+      const idx = Number(photoIndex?.value);
+      if (!Number.isInteger(idx) || idx < 0 || idx >= photos.length) return;
+      photos[idx] = { title: photoTitle.value.trim(), file: photoFile.value.trim() };
+      saveEditableList(PHOTOS_KEY, photos);
+      renderRows();
+      if (adminNote) adminNote.textContent = "Photo updated successfully.";
+    });
+
+    videoForm?.addEventListener("submit", (e) => {
+      e.preventDefault();
+      const idx = Number(videoIndex?.value);
+      if (!Number.isInteger(idx) || idx < 0 || idx >= videos.length) return;
+      videos[idx] = { title: videoTitle.value.trim(), file: videoFile.value.trim() };
+      saveEditableList(VIDEOS_KEY, videos);
+      renderRows();
+      if (adminNote) adminNote.textContent = "Video updated successfully.";
+    });
+
+    renderRows();
+  }
+
+  function setupVideosPage() {
+    const videoCards = document.getElementById("videoCards");
+    if (!videoCards) return;
+
+    const videos = getEditableList(VIDEOS_KEY, getDefaultVideos());
+    videoCards.innerHTML = videos.map((item) => `
+      <article class="card">
+        <div class="card-body">
+          <h3>${item.title}</h3>
+          <video controls width="100%">
+            <source src="${item.file}" type="video/mp4">
+            Your browser does not support the video tag.
+          </video>
+        </div>
+      </article>
+    `).join("");
+  }
 
   const galleryGrid = document.getElementById("galleryGrid");
   if (galleryGrid) {
-    const images = [
-      "atlantic_city.jpeg",
-      "bermuda.jpeg",
-      "cancun.jpeg",
-      "disney.jpeg",
-      "dominican.jpeg",
-      "greece.jpeg",
-      "newyork.jpeg",
-      "philly.jpeg"
-    ];
+    const images = getEditableList(PHOTOS_KEY, getDefaultPhotos());
 
     galleryGrid.innerHTML = images.map((img) => `
       <div class="gallery-item">
         <img
-          src="assets/img/${img}"
-          alt="${img.replace(/\.[^/.]+$/, "").replace(/_/g, " ")}"
+          src="${img.file}"
+          alt="${img.title}"
           loading="lazy"
         />
       </div>
@@ -250,4 +455,9 @@ if (playBtn && modal && video) {
       }
     });
   }
+
+  wireBannerAuthButton();
+  setupLogin();
+  setupAdminEditors();
+  setupVideosPage();
 })();
