@@ -91,36 +91,20 @@
       <p class="muted small">© <span id="year"></span> New World Venture, LLC</p>
     </footer>
 
-    <!-- Lightweight modal for "Play the video" -->
-    <div class="modal" id="videoModal" aria-hidden="true" role="dialog" aria-label="Video modal">
-      <div class="modal-backdrop" data-close="1"></div>
-      <div class="modal-card" role="document">
-        <div class="modal-head">
-          <strong>Demo video</strong>
-          <button class="modal-close" type="button" data-close="1" aria-label="Close">✕</button>
-        </div>
-        <div class="modal-body">
-          <div class="video-placeholder">
-            <div class="play-ico big">▶</div>
-            <p class="muted">This is a placeholder. Replace with an embedded YouTube/Vimeo iframe later.</p>
-          </div>
-        </div>
+    <div id="videoModal" class="video-modal" aria-hidden="true" role="dialog" aria-modal="true" aria-labelledby="videoModalTitle">
+      <div class="video-content" role="document">
+        <button id="closeVideo" class="video-close-btn" type="button" aria-label="Close video modal">✕</button>
+        <h2 id="videoModalTitle" class="sr-only">Promotional video</h2>
+        <video id="promoVideo" controls preload="metadata" playsinline>
+          <source src="assets/vid/mexico.mp4" type="video/mp4">
+          Your browser does not support the video tag.
+        </video>
       </div>
     </div>
   </main>
 
   <script src="assets/js/data.js"></script>
   <script src="assets/js/app.js"></script>
-	
-	<div id="videoModal" class="video-modal">
-  <div class="video-content">
-    <span id="closeVideo">&times;</span>
-    <video id="promoVideo" controls>
-      <source src="assets/vid/mexico.mp4" type="video/mp4">
-      Your browser does not support the video tag.
-    </video>
-  </div>
-</div>
-	
+
 </body>
 </html>
