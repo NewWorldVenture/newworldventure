@@ -342,6 +342,24 @@ body.home{background:#070b12}
   cursor: pointer;
 }
 
+@media (max-width: 560px){
+  .video-content {
+    width: 96%;
+  }
+
+  #closeVideo {
+    top: 8px;
+    right: 8px;
+    width: 36px;
+    height: 36px;
+    display: grid;
+    place-items: center;
+    border-radius: 999px;
+    background: rgba(0,0,0,.55);
+    line-height: 1;
+  }
+}
+
 /* ---------- Existing pages (destinations/about/contact) ---------- */
 .hero{padding: 3.5rem 0 2rem} /* legacy, unused on home now */
 .section{padding: 2rem 0 3.1rem}
