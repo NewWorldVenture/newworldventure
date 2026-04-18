@@ -55,6 +55,9 @@ code{background: rgba(255,255,255,.08); padding:.15rem .35rem; border-radius:.4r
 }
 .nav-toggle span{display:block; height:2px; width:18px; background: var(--text); margin:4px auto; border-radius:2px}
 
+.header-actions{display:flex; align-items:center; gap:.55rem; flex-wrap:wrap}
+.uploaded-video{width:100%; border-radius:.8rem; margin-top:.75rem; background:#000}
+
 /* ---------- Buttons ---------- */
 .btn{
   display:inline-flex; align-items:center; justify-content:center;
