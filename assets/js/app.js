@@ -40,9 +40,9 @@ if (playBtn && modal && video) {
     const images = [
       "atlantic_city.jpeg",
       "bermuda.jpeg",
-      "cancun.jpeg",
+      "cancun.svg",
       "disney.jpeg",
-      "dominican.jpeg",
+      "dominican.svg",
       "greece.jpeg",
       "newyork.jpeg",
       "philly.jpeg"
