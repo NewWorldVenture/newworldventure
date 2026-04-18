@@ -1,12 +1,10 @@
-
-
 window.TRIPNEST_DATA = [
   {
     id: "atlantic_city",
     name: "2025 Destination - Atlantic City",
     region: "North America",
     budget: "$$$",
-	image: "assets/img/atlantic_city.jpeg",
+    image: "assets/img/atlantic_city.jpeg",
     highlights: ["Northern lights", "Hot springs", "Road trips"],
     tags: ["adventure", "nature", "photography"],
     blurb: "A cozy capital with big nature energy — waterfalls, glaciers, and geothermal pools.",
@@ -68,11 +66,11 @@ window.TRIPNEST_DATA = [
     sampleDays: ["Historic district walk", "River Street bites", "Coffee + parks"]
   },
   {
-    id: "new york",
+    id: "new_york",
     name: "2025 Destination - New York",
     region: "North America",
     budget: "$$",
-	image: "assets/img/newyork.jpeg",
+    image: "assets/img/newyork.jpeg",
     highlights: ["Views", "Wine", "Coast"],
     tags: ["nature", "city", "food"],
     blurb: "Table Mountain, coastal drives, and world-class wine country nearby.",
@@ -83,10 +81,36 @@ window.TRIPNEST_DATA = [
     name: "2025 Destination - Dominican Republic",
     region: "Caribbean",
     budget: "$$$",
-	image: "assets/img/dominican.jpeg",
+    image: "assets/img/dominican.jpeg",
     highlights: ["Adventure", "Lakes", "Scenery"],
     tags: ["adventure", "nature", "thrills"],
     blurb: "A postcard town built for big views and bigger outdoor days.",
     sampleDays: ["Lake cruise", "Day hike", "Adventure activity"]
+  }
+];
+
+window.TRIPNEST_PHOTOS = [
+  { title: "Atlantic City", file: "atlantic_city.jpeg", category: "Destination" },
+  { title: "Bermuda", file: "bermuda.jpeg", category: "Destination" },
+  { title: "Cancún", file: "cancun.jpeg", category: "Destination" },
+  { title: "Disney", file: "disney.jpeg", category: "Destination" },
+  { title: "Dominican Republic", file: "dominican.jpeg", category: "Destination" },
+  { title: "Greece", file: "greece.jpeg", category: "Destination" },
+  { title: "New York", file: "newyork.jpeg", category: "Destination" },
+  { title: "Philadelphia", file: "philly.jpeg", category: "Destination" }
+];
+
+window.TRIPNEST_VIDEOS = [
+  {
+    title: "Mexico Adventure",
+    src: "assets/vid/mexico.mp4",
+    poster: "assets/img/cancun.jpeg",
+    description: "Beach highlights and excursion moments from the Mexico trip."
+  },
+  {
+    title: "Riviera Preview",
+    src: "assets/vid/Mexico.mp4",
+    poster: "assets/img/dominican.jpeg",
+    description: "A quick preview reel featuring coastlines and resort stops."
   }
 ];

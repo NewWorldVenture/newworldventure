@@ -1,0 +1,110 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Admin — New World Venture</title>
+  <meta name="description" content="Admin content management for New World Venture." />
+  <link rel="stylesheet" href="assets/css/styles.css" />
+</head>
+<body>
+  <header class="site-header">
+    <div class="container header-inner">
+      <a class="brand" href="index.html" aria-label="New World Venture Home">
+        <span class="brand-mark">✈️</span>
+        <span class="brand-text">New World Venture</span>
+      </a>
+
+      <nav class="nav" aria-label="Primary">
+        <a class="nav-link active" href="admin.html">Admin</a>
+      </nav>
+
+      <button class="nav-toggle" aria-label="Open menu" aria-expanded="false">
+        <span></span><span></span><span></span>
+      </button>
+    </div>
+  </header>
+
+  <main>
+    <section class="section">
+      <div class="container">
+        <div class="section-head">
+          <h1>Admin</h1>
+          <p>Manage destination, photo, and video data.</p>
+        </div>
+
+        <div id="adminGate" class="note-box" hidden>
+          <strong>Login required.</strong>
+          <p class="muted">Use the Login button in the navigation to continue.</p>
+        </div>
+
+        <div id="adminContent" hidden>
+          <div class="admin-tabs" role="tablist" aria-label="Admin sections">
+            <button class="admin-tab active" type="button" data-tab="destinations">Destinations</button>
+            <button class="admin-tab" type="button" data-tab="photos">Photos</button>
+            <button class="admin-tab" type="button" data-tab="videos">Videos</button>
+          </div>
+
+          <section class="admin-panel" data-panel="destinations">
+            <h2>Destinations</h2>
+            <div class="table-wrap">
+              <table class="admin-table">
+                <thead>
+                  <tr>
+                    <th>Name</th>
+                    <th>Region</th>
+                    <th>Budget</th>
+                    <th>Tags</th>
+                  </tr>
+                </thead>
+                <tbody id="adminDestinationsBody"></tbody>
+              </table>
+            </div>
+          </section>
+
+          <section class="admin-panel" data-panel="photos" hidden>
+            <h2>Photos</h2>
+            <div class="table-wrap">
+              <table class="admin-table">
+                <thead>
+                  <tr>
+                    <th>Title</th>
+                    <th>File</th>
+                    <th>Category</th>
+                  </tr>
+                </thead>
+                <tbody id="adminPhotosBody"></tbody>
+              </table>
+            </div>
+          </section>
+
+          <section class="admin-panel" data-panel="videos" hidden>
+            <h2>Videos</h2>
+            <div class="table-wrap">
+              <table class="admin-table">
+                <thead>
+                  <tr>
+                    <th>Title</th>
+                    <th>Source</th>
+                    <th>Description</th>
+                  </tr>
+                </thead>
+                <tbody id="adminVideosBody"></tbody>
+              </table>
+            </div>
+          </section>
+        </div>
+      </div>
+    </section>
+  </main>
+
+  <footer class="site-footer">
+    <div class="container footer-inner">
+      <p>© <span id="year"></span> New World Venture, LLC</p>
+    </div>
+  </footer>
+
+  <script src="assets/js/data.js"></script>
+  <script src="assets/js/app.js"></script>
+</body>
+</html>
