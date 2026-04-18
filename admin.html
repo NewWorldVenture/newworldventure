@@ -1,0 +1,97 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Admin — New World Venture</title>
+  <meta name="description" content="Manage destinations and media." />
+  <link rel="stylesheet" href="assets/css/styles.css" />
+</head>
+<body>
+  <header class="site-header">
+    <div class="container header-inner">
+      <a class="brand" href="index.html" aria-label="New World Venture Home">
+        <span class="brand-mark">✈️</span>
+        <span class="brand-text">New World Venture</span>
+      </a>
+
+      <nav class="nav" aria-label="Primary">
+        <a class="nav-link" href="index.html">Home</a>
+        <a class="nav-link" href="destinations.html">Destinations</a>
+        <a class="nav-link" href="gallery.html">Gallery</a>
+        <a class="nav-link" href="pay.html">Payments</a>
+        <a class="nav-link" href="about.html">About</a>
+        <a class="nav-link active" href="admin.html">Admin</a>
+      </nav>
+
+      <a class="btn btn-ghost" href="contact.html">Contact</a>
+
+      <button class="nav-toggle" aria-label="Open menu" aria-expanded="false">
+        <span></span><span></span><span></span>
+      </button>
+    </div>
+  </header>
+
+  <main id="adminRoot">
+    <section class="section">
+      <div class="container">
+        <div class="section-head">
+          <h1>Admin</h1>
+          <p class="muted">Add, edit, save, and delete destinations, photos, and videos.</p>
+        </div>
+
+        <h2>Manage Destinations</h2>
+        <div id="adminDestinationList" class="admin-list"></div>
+
+        <form id="addDestinationForm" class="form note-box" style="margin-top:16px;">
+          <h3>Add Destination</h3>
+          <div class="grid-2">
+            <label class="field"><span>Name</span><input name="name" required /></label>
+            <label class="field"><span>Region</span><input name="region" required /></label>
+            <label class="field"><span>Budget</span>
+              <select name="budget">
+                <option value="$">$</option>
+                <option value="$$" selected>$$</option>
+                <option value="$$$">$$$</option>
+              </select>
+            </label>
+            <label class="field"><span>Image URL</span><input name="image" placeholder="assets/img/example.jpeg" /></label>
+          </div>
+          <label class="field"><span>Blurb</span><textarea name="blurb" rows="2"></textarea></label>
+          <label class="field"><span>Tags (comma-separated)</span><input name="tags" /></label>
+          <label class="field"><span>Highlights (comma-separated)</span><input name="highlights" /></label>
+          <button class="btn btn-primary" type="submit">Add Destination</button>
+        </form>
+
+        <h2 style="margin-top:28px;">Manage Photos & Videos</h2>
+        <div id="adminMediaList" class="admin-list"></div>
+
+        <form id="addMediaForm" class="form note-box" style="margin-top:16px;">
+          <h3>Add Photo or Video</h3>
+          <div class="grid-2">
+            <label class="field"><span>Type</span>
+              <select name="type">
+                <option value="photo">Photo</option>
+                <option value="video">Video</option>
+              </select>
+            </label>
+            <label class="field"><span>File Path</span><input name="path" required placeholder="assets/img/photo.jpeg or assets/vid/video.mp4" /></label>
+          </div>
+          <button class="btn btn-primary" type="submit">Add Media</button>
+        </form>
+
+        <p class="form-note" id="adminNote"></p>
+      </div>
+    </section>
+  </main>
+
+  <footer class="site-footer">
+    <div class="container footer-inner">
+      <p>© <span id="year"></span> New World Venture, LLC</p>
+    </div>
+  </footer>
+
+  <script src="assets/js/data.js"></script>
+  <script src="assets/js/app.js"></script>
+</body>
+</html>
