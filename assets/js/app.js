@@ -9,28 +9,39 @@
   const yearEl = $("#year");
 
 const playBtn = document.getElementById("playVideoBtn");
-const modal = document.getElementById("videoModal");
+const modal = document.querySelector(".video-modal");
 const closeBtn = document.getElementById("closeVideo");
 const video = document.getElementById("promoVideo");
 
-if (playBtn && modal && video) {
-  playBtn.addEventListener("click", () => {
-    modal.style.display = "flex";
-    video.play();
-  });
+if (playBtn && modal && closeBtn && video) {
+  const isMobile = window.matchMedia("(max-width: 900px)").matches || navigator.maxTouchPoints > 0;
 
-  closeBtn.addEventListener("click", () => {
+  function closeVideoModal() {
     modal.style.display = "none";
     video.pause();
     video.currentTime = 0;
+  }
+
+  playBtn.addEventListener("click", () => {
+    modal.style.display = "flex";
+
+    if (isMobile) {
+      video.setAttribute("playsinline", "");
+      video.setAttribute("webkit-playsinline", "");
+    }
+
+    const playPromise = video.play();
+    if (playPromise?.catch) {
+      playPromise.catch(() => {
+        video.controls = true;
+      });
+    }
   });
 
+  closeBtn.addEventListener("click", closeVideoModal);
+
   modal.addEventListener("click", (e) => {
-    if (e.target === modal) {
-      modal.style.display = "none";
-      video.pause();
-      video.currentTime = 0;
-    }
+    if (e.target === modal) closeVideoModal();
   });
 }
 
